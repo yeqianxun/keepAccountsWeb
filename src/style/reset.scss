@@ -1,0 +1,16 @@
+body,html{
+    height: 100%;
+    width: 100%;
+    margin:0;
+    padding: 0;
+}
+$tagH:1,2,3,4;
+@each $i in $tagH {
+    h#{$i}{
+        margin: 0;
+        padding: 0;
+    }
+}
+a{
+    text-decoration: none;
+}
