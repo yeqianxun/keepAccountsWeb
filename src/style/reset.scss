@@ -1,16 +1,38 @@
-body,html{
+body,
+html {
     height: 100%;
     width: 100%;
-    margin:0;
+    margin: 0;
     padding: 0;
+    background-color: #fff;
 }
-$tagH:1,2,3,4;
+
+a {
+    text-decoration: none;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    display: none;
+}
+::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 2px;
+}
+::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+::-webkit-scrollbar-corner {
+    background: #179a16;
+}
+$tagH: 1, 2, 3, 4;
 @each $i in $tagH {
-    h#{$i}{
+    h#{$i} {
         margin: 0;
         padding: 0;
     }
-}
-a{
-    text-decoration: none;
 }
