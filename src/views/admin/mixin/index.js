@@ -47,25 +47,6 @@ export default {
                     { value: "line", label: "条形图" },
                     { vlaue: "bar", label: "柱状图" },
                 ],
-            },
-            {
-                prop: "timeRange",
-                placeholder: "时间周期",
-                className: "time-range",
-                options: [
-                    {
-                        value: "week",
-                        label: "近一周",
-                    },
-                    {
-                        value: "month",
-                        label: "近一月",
-                    },
-                    {
-                        value: "year",
-                        label: "近一年",
-                    },
-                ],
             }]
         }
     }

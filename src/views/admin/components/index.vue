@@ -2,7 +2,7 @@
   <div class="admin-index-box">
     <div class="top-box">
       <div class="box-left">
-        <template v-for="item in chartData">
+        <!-- <template v-for="item in chartData">
           <el-select
             v-model="props[item.prop]"
             :placeholder="item.placeholder"
@@ -17,7 +17,7 @@
             >
             </el-option>
           </el-select>
-        </template>
+        </template> -->
         <pie-chart />
       </div>
       <div class="box-right">
@@ -123,6 +123,7 @@ export default {
     .box-left {
       width: 70%;
       height: 100%;
+      background: #EfEfEf;
       border: 1px solid #f0f0f0;
     }
     .box-right {
@@ -137,6 +138,9 @@ export default {
           margin-right: 15px;
           font-size: 18px;
           color: #333;
+          &.iconfont{
+            font-size: 24px;
+          }
         }
       }
       .box-card {

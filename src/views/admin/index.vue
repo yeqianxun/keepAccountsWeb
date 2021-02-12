@@ -2,17 +2,16 @@
   <div class="admin-container">
     <div class="admin-index-wrapper">
       <el-header>
-        <span class="iconfont icon-win10"></span>
+        <span class="iconfont icon-win10" @click="clickWin10"></span>
         <div class="user-info">
-          <span>系统管理员</span>
+          <span>{{ userInfo.userName }}</span>
           <span class="iconfont icon-quit"></span>
         </div>
       </el-header>
       <el-container>
-        <el-aside>
+        <el-aside v-show="isShowSidebar">
           <el-menu class="admin-menu-sidebar" :collapse="isCollapse">
             <template v-for="item in menuList">
-              
               <el-menu-item :key="item.text">
                 <i :class="['iconfont', item.icon]"></i>
                 <span slot="title">{{ item.text }}</span>
@@ -39,11 +38,9 @@ export default {
       return this.$route.path;
     },
   },
-  // created() {
-  //   console.log(this.$store, this.userInfo);
-  // },
   data() {
     return {
+      isShowSidebar: true,
       isCollapse: true,
       menuList: [
         { text: "资产管理", icon: "icon-money" },
@@ -53,7 +50,11 @@ export default {
       ],
     };
   },
-  methods: {},
+  methods: {
+    clickWin10() {
+      this.isShowSidebar = !this.isShowSidebar;
+    },
+  },
 };
 </script>
 
@@ -102,16 +103,16 @@ export default {
         cursor: pointer;
       }
     }
-    .user-info{
+    .user-info {
       margin-left: auto;
-      span{
+      span {
         vertical-align: middle;
-        &:last-child{
+        &:last-child {
           margin-right: 15px;
           margin: 0 15px;
         }
       }
-      &::after{
+      &::after {
         content: "";
         display: inline-block;
         height: 100%;
