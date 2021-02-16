@@ -12,9 +12,9 @@ module.exports = {
             '^/api': {
                 target: 'http://localhost:3333',
                 changeOrigin: true,
-                ws: true,
+                // ws: true,
                 pathRewrite: {
-                    "^/api": ""
+                    '^/api': ''
                 }
             }
         }

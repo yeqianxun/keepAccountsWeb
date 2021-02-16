@@ -19,9 +19,19 @@
 </template>
 
 <script>
+import Axios from "@/utils/http";
 export default {
   data() {
     return {};
+  },
+  created() {
+    Axios.get("/api/test")
+      .then((res) => {
+        console.log("crated===>0", res);
+      })
+      .catch((error) => {
+        console.warn("erro====>", error);
+      });
   },
   methods: {},
 };

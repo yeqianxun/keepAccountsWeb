@@ -9,6 +9,7 @@ let routes = [
     {
         path: "/login",
         name: "login",
+        meta: { requireAuth: true },
         component: () => import("@/views/login")
     },
     {

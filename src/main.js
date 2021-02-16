@@ -36,9 +36,16 @@ let router = new VueRouter({
   }
 });
 router.beforeEach((to, from, next) => {
-  console.log("to--->", to, from);
   store.commit("user/SET_USER_INFO", "yangxinglong")
-  next();
+  if (to.meta.requireAuth == true) {
+    if (window.localStorage.getItem("token") != undefined) {
+      next();
+    } else {
+      router.push("/login");
+    }
+  } else {
+    next();
+  }
 });
 
 new Vue({

@@ -1,13 +1,20 @@
 <template>
   <div id="app">
     <transition name="fade-transform" mode="out-in">
-      <router-view></router-view>
+      <keep-alive :exclude="blackList">
+        <router-view />
+      </keep-alive>
     </transition>
   </div>
 </template>
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      blackList: [],
+    };
+  },
 };
 </script>
 
