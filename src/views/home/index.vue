@@ -2,9 +2,10 @@
   <div class="home-page">
     <div class="home-wrapper">
       <div class="home-bg"></div>
-      <h2>在线工具库</h2>
+      <h2>我的站点</h2>
       <p class="hone-p1">
-        一个用Vue2全家桶,Koa和Mysql开发的在线工具库,旨在将学习到的前端后端技术融会贯通，并服务于自身
+        一个用Vue2全家桶,Koa和Mysql开发的在线Web项目，旨在将学习到的前端后端技术融会贯通，
+        学习和思考产品的设计。
       </p>
       <p>
         <router-link to="/admin/index">进入主页</router-link>
@@ -39,15 +40,15 @@ export default {
 
 <style scoped lang="scss" >
 .home-page {
-  // background: url("~@/assets/images/frontbg.png") no-repeat;
-  // background-size:100% 100% ;
   position: relative;
   height: 100%;
+  font-size: 14px;
   overflow: hidden;
   .home-wrapper {
     width: 60%;
     margin: 0 auto;
-    margin-top: 15%;
+    // margin-top: 15%;
+    transform: translateY(50%);
     position: relative;
     .hone-p1 {
       width: 60%;

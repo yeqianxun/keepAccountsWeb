@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6958057",
+      "name": "动态",
+      "font_class": "dongtai",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "13612776",
+      "name": "租房",
+      "font_class": "zufang",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "18245341",
+      "name": "我的_联系我们",
+      "font_class": "lianxiwomen1",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "19638042",
+      "name": "home",
+      "font_class": "home-def",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
       "icon_id": "314682",
       "name": "金融 红包 现金 钱包",
       "font_class": "hongbao001",

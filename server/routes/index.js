@@ -8,7 +8,6 @@ router.get('/', async (ctx, next) => {
 })
 
 router.get('/test', async (ctx, next) => {
-  console.log("test====>test", ctx.headers)
   ctx.body = {
     message: "后台请求首页ddd"
   }

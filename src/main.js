@@ -1,27 +1,16 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import ElementUI from 'element-ui';
-let echarts = require('echarts/lib/echarts');
-// 引入折线图/柱状图等组件
-require('echarts/lib/chart/line');
-require('echarts/lib/chart/bar');
-require('echarts/lib/chart/pie');
-// 引入提示框和title组件，图例
-require('echarts/lib/component/tooltip');
-require('echarts/lib/component/title');
-require('echarts/lib/component/legend');
-// require('echarts/lib/component/series');
-require('echarts/lib/component/legendScroll');//图例滚动
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
 import store from "@/store/";
 import routes from "@/router";
+import Axios from "@/utils/http.js";
 import "@/style/index.scss";
 import "@/assets/fonts/iconfont.css";
 
 Vue.config.productionTip = false;
-Vue.prototype.$echarts = echarts
-
+Vue.prototype.$Axios = Axios;
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 let router = new VueRouter({
@@ -36,15 +25,15 @@ let router = new VueRouter({
   }
 });
 router.beforeEach((to, from, next) => {
-  store.commit("user/SET_USER_INFO", "yangxinglong")
-  if (to.meta.requireAuth == true) {
-    if (window.localStorage.getItem("token") != undefined) {
-      next();
-    } else {
-      router.push("/login");
-    }
+  let token = window.sessionStorage.getItem("token")
+  if (to.path == "/login") {
+    token ? next("/") : next();
   } else {
-    next();
+    if (to.meta.requireAuth == true && !token) {
+      next("/login")
+    } else {
+      next()
+    }
   }
 });
 

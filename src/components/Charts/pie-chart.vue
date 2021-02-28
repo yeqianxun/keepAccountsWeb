@@ -187,9 +187,9 @@ export default {
   },
   mounted() {
     //检测 图标自适应
-    this.$nextTick(() => {
-      this.initChart();
-    });
+    // this.$nextTick(() => {
+    this.initChart();
+    // });
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
         this.chart.resize();

@@ -1,24 +1,14 @@
 <template>
   <div class="admin-container">
     <div class="admin-index-wrapper">
-      <el-header>
-        <span class="iconfont icon-win10" @click="clickWin10"></span>
-        <div class="user-info">
+      <custom-header>
+        <component :is="componentName" slot="sidebar"></component>
+        <div class="user-info" slot="account">
           <span>{{ userInfo.userName }}</span>
           <span class="iconfont icon-quit"></span>
         </div>
-      </el-header>
+      </custom-header>
       <el-container>
-        <el-aside v-show="isShowSidebar">
-          <el-menu class="admin-menu-sidebar" :collapse="isCollapse">
-            <template v-for="item in menuList">
-              <el-menu-item :key="item.text">
-                <i :class="['iconfont', item.icon]"></i>
-                <span slot="title">{{ item.text }}</span>
-              </el-menu-item>
-            </template>
-          </el-menu>
-        </el-aside>
         <el-main>
           <transition name="fade-transform" mode="out-in">
             <router-view :key="path"></router-view>
@@ -30,6 +20,9 @@
 </template>
 
 <script>
+import NavbarHouseOwner from "./components/navbar-house-owner";
+import NavbarTenant from "./components/navbar-tenant";
+import CustomHeader from "@/views/header";
 import { mapGetters } from "vuex";
 export default {
   computed: {
@@ -38,23 +31,17 @@ export default {
       return this.$route.path;
     },
   },
+  components: {
+    NavbarHouseOwner,
+    NavbarTenant,
+    CustomHeader,
+  },
   data() {
     return {
-      isShowSidebar: true,
-      isCollapse: true,
-      menuList: [
-        { text: "资产管理", icon: "icon-money" },
-        { text: "项目管理", icon: "icon-ProjectInformation" },
-        { text: "事务管理", icon: "icon-shiwu" },
-        { text: "系统设置", icon: "icon-xingzhuang604" },
-      ],
+      componentName: "NavbarTenant",
     };
   },
-  methods: {
-    clickWin10() {
-      this.isShowSidebar = !this.isShowSidebar;
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -64,7 +51,7 @@ export default {
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .admin-index-wrapper {
   height: 100%;
   .el-aside {
@@ -77,47 +64,20 @@ export default {
       }
     }
   }
-  header {
-    text-align: left;
-    position: relative;
-    padding: 0;
-    border-bottom: 1px solid #f0f0f0;
-    display: flex;
+  .user-info {
     span {
-      &.icon-win10 {
-        font-size: 32px;
-        display: inline-block;
-        vertical-align: middle;
-        height: 100%;
-        width: 60px;
-        text-align: center;
-        &:after {
-          content: "";
-          height: 100%;
-          display: inline-block;
-          vertical-align: middle;
-        }
-      }
-      &:hover {
-        color: #707070;
-        cursor: pointer;
+      vertical-align: middle;
+      color: #909399;
+      &:last-child {
+        margin-right: 15px;
+        margin: 0 15px;
       }
     }
-    .user-info {
-      margin-left: auto;
-      span {
-        vertical-align: middle;
-        &:last-child {
-          margin-right: 15px;
-          margin: 0 15px;
-        }
-      }
-      &::after {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        vertical-align: middle;
-      }
+    &::after {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
     }
   }
   .el-container {
