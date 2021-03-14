@@ -12,7 +12,7 @@
       </p>
     </div>
     <div class="mailto">
-      Power By:<a href="mailto:steven_yxl@foxmail.com"
+      Powered By:<a href="mailto:steven_yxl@foxmail.com"
         >steven_yxl@foxmail.com</a
       >
     </div>

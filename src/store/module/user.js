@@ -1,3 +1,4 @@
+import { getUserInfo } from "@/http/user.js";
 export default {
     namespaced: true,
     state: {
@@ -15,7 +16,19 @@ export default {
             state.userInfo.userName = data;
         }
     },
-    action: {
+    actions: {
+        GET_USERINFO({ state }) {
+            return new Promise((resolve, reject) => {
+                getUserInfo().then(res => {
+                    resolve(res);
+                    if (res) {
+                        state.userInfo = res;
+                    }
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+        }
         // ASYNC_SET_TEST_STATE({ state, commit, rootState }, payload) {
         // }
     },

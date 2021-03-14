@@ -4,21 +4,37 @@
     <div class="login-form">
       <div class="login-form-left"></div>
       <div class="login-form-right">
-        <div>
-          <h2><span>登录</span>|<span>注册</span></h2>
-        </div>
+        <h2 class="login-register-title">
+          <span
+            :class="[activeTab == 'login' ? 'active' : '']"
+            @click="changeLoginRegister('login')"
+            >登录</span
+          ><span
+            :class="[activeTab == 'reg' ? 'active' : '']"
+            @click="changeLoginRegister('reg')"
+            >注册</span
+          >
+        </h2>
         <el-form v-model="form" :rules="rules" class="form-wrapper">
           <el-form-item aria-placeholder="请输入账号">
             <el-input v-model="form.name" placeholder="请输入账号"></el-input>
           </el-form-item>
           <el-form-item aria-placeholder="请输入密码">
-            <el-input v-model="form.pwd" placeholder="请输入密码"></el-input>
+            <el-input
+              type="password"
+              v-model="form.pwd"
+              placeholder="请输入密码"
+            ></el-input>
+          </el-form-item>
+          <el-form-item aria-placeholder="请输入确认密码">
+            <el-input
+              v-show="activeTab == 'reg'"
+              v-model="form.pwd2"
+              placeholder="请输入确认密码"
+            ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" type="primary" @click="login"
-              >登录</el-button
-            >
-            <el-button size="small">注册</el-button>
+            <el-button size="small" @click="loginOrRegister">提交</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -37,27 +53,49 @@ export default {
       form: {
         name: "",
         pwd: "",
+        pwd2: "",
       },
+      activeTab: "login",
       rules: {},
     };
   },
   methods: {
-    login() {
+    loginOrRegister() {
+      let URL =
+        this.activeTab == "login" ? "/api/users/login" : "/api/users/register";
       this.$Axios
-        .post("/api/users/login", {
-          name: this.form.name,
-          pwd: this.form.pwd,
+        .post(URL, {
+          username: this.form.name,
+          password: this.form.pwd,
         })
         .then((res) => {
-          console.log("res--==>", res);
           if (res.status == "success") {
             window.sessionStorage.setItem("token", res.token);
-            this.$store.commit("user/SET_USER_INFO", res.token);
             this.$router.push("/admin/index");
+            this.$message({
+              message: res.message,
+              type: "success",
+            });
+          } else {
+            if (res.code == -1) {
+              this.$message({
+                message: "账户或密码错误",
+                type: "info",
+              });
+              this.activeTab = "login";
+              this.resetForm();
+            }
           }
         });
     },
-    resetForm() {},
+    resetForm() {
+      Object.keys(this.form).forEach((prop) => {
+        this.form[prop] = "";
+      });
+    },
+    changeLoginRegister(str) {
+      this.activeTab = str;
+    },
   },
 };
 </script>
@@ -93,8 +131,27 @@ export default {
   .login-form-right {
     width: 40%;
     padding: 30px 20px;
+    .login-register-title {
+      display: flex;
+      padding: 0 100px;
+      span {
+        width: 50%;
+        text-align: center;
+        cursor: pointer;
+        &.active {
+          color: orange;
+        }
+      }
+    }
     .form-wrapper {
       margin: 40px;
+      .el-button {
+        background: #ff5a5f;
+        width: 100%;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+      }
     }
   }
 }

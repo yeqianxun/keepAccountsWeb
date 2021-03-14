@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
-
-const sequelize = new Sequelize('money_manage', 'admin', '123456', {
+let { SqlConfig } = require("./lib/config")
+const sequelize = new Sequelize(SqlConfig.DBName, SqlConfig.DBOwner, SqlConfig.DBPwd, {
   host: 'localhost',
   dialect: 'mysql',
   pool: {
@@ -18,7 +18,7 @@ sequelize
   .catch(err => {
     console.error('链接失败:', err);
   });
-  
+
 // 根据模型自动创建表
 sequelize.sync({
   logging: console.log

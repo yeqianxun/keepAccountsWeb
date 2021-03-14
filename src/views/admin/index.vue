@@ -5,7 +5,7 @@
         <component :is="componentName" slot="sidebar"></component>
         <div class="user-info" slot="account">
           <span>{{ userInfo.userName }}</span>
-          <span class="iconfont icon-quit"></span>
+          <span class="iconfont icon-quit" @click="loginOut"></span>
         </div>
       </custom-header>
       <el-container>
@@ -41,7 +41,14 @@ export default {
       componentName: "NavbarTenant",
     };
   },
-  methods: {},
+  methods: {
+    loginOut() {
+      window.sessionStorage.removeItem("token");
+      this.$router.push({
+        path: "/",
+      });
+    },
+  },
 };
 </script>
 
@@ -68,6 +75,7 @@ export default {
     span {
       vertical-align: middle;
       color: #909399;
+      cursor: pointer;
       &:last-child {
         margin-right: 15px;
         margin: 0 15px;

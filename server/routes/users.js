@@ -1,11 +1,7 @@
 const router = require('koa-router')({ "prefix": "/users" })
+let UserController = require("../controllers/user")
 
-router.post("/login", async (ctx, next) => {
-  let data = ctx.request.body;
-  ctx.body = {
-    status: "success",
-    message: "登录成功",
-    token: data.name
-  }
-});
+router.post("/login", UserController.UserLogin);
+router.post("/register", UserController.UserRegister);
+router.get("/userinfo", UserController.getUserInfo)
 module.exports = router;

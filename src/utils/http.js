@@ -19,7 +19,12 @@ axios.interceptors.response.use(response => {
     if (response.status == 200) {
         return Promise.resolve(response.data);
     }
-}, function (error) {
+}, (error) => {
+    let errorData = error.response.data;
+    //token未认证从定向到登录界面
+    if (errorData.status == 401) {
+        window.location.href = "/login"
+    }
     return Promise.reject(error);
 });
 export default axios;
