@@ -3,9 +3,19 @@ const jsonwebtoken = require("jsonwebtoken")
 let UserModel = require("../model/users");
 let { MD5Crypto } = require("../lib/utils")
 let { jwtSignSecret } = require("../lib/config");
+
+
 let UserController = {
     async findUserIsExist(ctx) {
         let { username, password } = ctx.request.body;
+        if (!username || !password) {
+            ctx.body = {
+                code: -1,
+                status: "faile",
+                message: "用户名或密码不存在"
+            }
+            return
+        }
         let result = await UserModel.findOne({
             where: {
                 username: {
@@ -17,7 +27,6 @@ let UserController = {
         return result;
     },
     async getUserInfo(ctx) {
-        console.log("state===>0", ctx.state)
         ctx.body = {
             status: 200,
             data: "获取用户信息"
@@ -33,18 +42,15 @@ let UserController = {
                 data: null
             }
         } else {
-            console.log("登录====》", result.dataValues.username);
             let value = result.dataValues;
             let signToken = jsonwebtoken.sign(
-                { username: value.username, id: result.id },  // 加密userToken
-                jwtSignSecret,
-                { expiresIn: '1h' });
-            console.log("sing====>0", signToken)
+                { username: value.username, id: result.id }, jwtSignSecret, { expiresIn: 1 * 60 });
             ctx.body = {
                 code: 0,
                 status: "success",
                 message: "登录成功",
-                token: signToken
+                token: signToken,
+                userinfo: result
             }
         }
     },

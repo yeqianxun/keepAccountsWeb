@@ -63,30 +63,35 @@ export default {
     loginOrRegister() {
       let URL =
         this.activeTab == "login" ? "/api/users/login" : "/api/users/register";
-      this.$Axios
-        .post(URL, {
+      this.$Axios({
+        method: "POST",
+        url: URL,
+        data: {
           username: this.form.name,
           password: this.form.pwd,
-        })
-        .then((res) => {
-          if (res.status == "success") {
-            window.sessionStorage.setItem("token", res.token);
-            this.$router.push("/admin/index");
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        if (res.status == "success") {
+          window.sessionStorage.setItem("token", res.token);
+          this.$router.push("/admin/index");
+          this.$message({
+            message: res.message,
+            type: "success",
+          });
+        } else {
+          if (res.code == -1) {
             this.$message({
-              message: res.message,
-              type: "success",
+              message: "账户或密码错误",
+              type: "info",
             });
-          } else {
-            if (res.code == -1) {
-              this.$message({
-                message: "账户或密码错误",
-                type: "info",
-              });
-              this.activeTab = "login";
-              this.resetForm();
-            }
+            this.activeTab = "login";
+            this.resetForm();
           }
-        });
+        }
+      });
     },
     resetForm() {
       Object.keys(this.form).forEach((prop) => {

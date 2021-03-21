@@ -1,4 +1,4 @@
 let BaseURL = {
-    userInfo: "/api/userinfo"
+    userInfo: "/api/users/userinfo"
 }
 export default BaseURL

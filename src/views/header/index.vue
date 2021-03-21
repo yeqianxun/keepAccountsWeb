@@ -26,7 +26,9 @@ header {
   position: relative;
   padding: 0;
   display: flex;
-  background-color: #202329;
+  // background-color: #202329;
+  border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 0 5px #ccc;
   .logo-link {
     display: block;
   }

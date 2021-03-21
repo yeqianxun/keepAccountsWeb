@@ -4,5 +4,6 @@ module.exports = {
         DBOwner: "admin",
         DBPwd: "123456",
     },
-    jwtSignSecret: "jwt-token-secret"
+    jwtSignSecret: "jwt-token-secret",
+    tokenExpiresTime: 1 * 60 * 1000
 }

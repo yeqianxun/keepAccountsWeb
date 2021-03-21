@@ -5,6 +5,7 @@ const onerror = require('koa-onerror')
 const KoaBody = require('koa-body')
 const logger = require('koa-logger')
 const koajwt = require("koa-jwt");
+const jsonwebtoken = require("jsonwebtoken");
 let { jwtSignSecret } = require("./lib/config");
 let { tokenVerify } = require("./lib/utils")
 const InitRoute = require("./lib/index");
@@ -25,20 +26,7 @@ app.use(Cors({
 }));
 
 // error handler
-onerror(app)
-app.use(async (ctx, next) => {
-  let token = ctx.header.authorization;
-  if (token) {
-    let payload = await tokenVerify(token);
-    console.log("token===>", payload)
-    ctx.state = {
-      payload
-    };
-    await next();
-  } else {
-    await next()
-  }
-});
+onerror(app);
 // middlewares
 app.use(KoaBody({
   multipart: true,
@@ -48,26 +36,23 @@ app.use(KoaBody({
 }));
 app.use(json());
 app.use(logger());
-
-
-// /* 当token验证异常时候的处理，如token过期、token错误 */
-app.use(async (ctx, next) => {
+// 错误处理
+app.use((ctx, next) => {
   return next().catch((err) => {
-    if (err.status == 401) {
+    if (err.status === 401) {
       ctx.status = 401;
       ctx.body = {
-        status: 401,
-        message: err.message
+        message: "认证失败"
       }
     } else {
       throw err;
     }
-  });
-});
+  })
+})
 // auth
 app.use(koajwt({ secret: jwtSignSecret }).unless({
   // 登录,注册接口不需要验证
-  path: [/^\/users\/login/, /^\/users\/register/, "/test"]
+  path: [/^\/users\/login/, /^\/users\/register/]
 }));
 // logger
 app.use(async (ctx, next) => {
@@ -82,7 +67,7 @@ InitRoute(app);
 
 // error-handling
 app.on('error', (err, ctx) => {
-  console.error('server error：', err, err.status)
+  console.error('server error：', err, err.status);
 });
 
 module.exports = app

@@ -54,14 +54,14 @@ export default {
 <style lang="scss" scoped>
 .navbar-admin {
   margin-left: auto;
-  background: #202329;
+  // background: #202329;
   .iconfont {
     margin-right: 10px;
   }
   .navbar-item {
     font-size: 16px;
     &:hover {
-      color: white !important;
+      // color: white !important;
       background: transparent !important;
     }
   }

@@ -39,7 +39,7 @@ export default {
       activeIndex: "1",
       navbarList: [
         { index: "1", text: "首页", icon: "icon-home-def" },
-        { index: "2", text: "寻租", icon: "icon-zufang" },
+        { index: "2", text: "地图找房", icon: "icon-zufang" },
         { index: "3", text: "产品动态", icon: "icon-dongtai" },
         { index: "4", text: "联系我们", icon: "icon-lianxiwomen1" },
         { index: "5", text: "账户设置", icon: "icon-xingzhuang604" },
@@ -54,22 +54,22 @@ export default {
 <style lang="scss" scoped>
 .navbar-admin {
   margin-left: auto;
-  background: #202329;
+  // background: #202329;
   border: 0;
   .iconfont {
     margin-right: 10px;
   }
   .navbar-item {
     font-size: 14px;
-    background: #202329 !important;
+    // background: #202329 !important;
     border: 0 !important;
     &:hover {
-      color: white !important;
-      background: #202329 !important;
+      // color: white !important;
+      // background: #202329 !important;
     }
     &.is-active {
       // background: red;
-      background: rgba(15, 17, 15, 0.8)!important;
+      // background: rgba(15, 17, 15, 0.8)!important;
     }
   }
 }

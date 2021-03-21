@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import VueRouter from "vue-router";
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 
 import App from './App.vue'
 import store from "@/store/";
 import routes from "@/router";
 import Axios from "@/utils/http.js";
+import vueSwiper from 'vue-awesome-swiper'
+import 'element-ui/lib/theme-chalk/index.css';
+import 'swiper/dist/css/swiper.css'
 import "@/style/index.scss";
 import "@/assets/fonts/iconfont.css";
 
@@ -18,7 +20,7 @@ Vue.prototype.$Axios = Axios;
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
-
+Vue.use(vueSwiper);
 let router = new VueRouter({
   mode: "history",
   routes,
@@ -33,7 +35,6 @@ let router = new VueRouter({
 router.beforeEach((to, from, next) => {
   NProgress.start()
   let token = window.sessionStorage.getItem("token");
-  store.dispatch("user/GET_USERINFO")
   if (to.path == "/login") {
     token ? next("/") : next();
   } else {

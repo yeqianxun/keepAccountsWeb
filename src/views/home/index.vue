@@ -20,19 +20,9 @@
 </template>
 
 <script>
-import Axios from "@/utils/http";
 export default {
   data() {
     return {};
-  },
-  created() {
-    Axios.get("/api/test")
-      .then((res) => {
-        console.log("crated===>0", res);
-      })
-      .catch((error) => {
-        console.warn("erro====>", error);
-      });
   },
   methods: {},
 };
@@ -48,7 +38,8 @@ export default {
     width: 60%;
     margin: 0 auto;
     // margin-top: 15%;
-    transform: translateY(50%);
+    // transform: translateY(50%);
+    margin-top: 20vh;
     position: relative;
     .hone-p1 {
       width: 60%;
