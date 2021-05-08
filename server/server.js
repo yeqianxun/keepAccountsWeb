@@ -9,9 +9,7 @@ const jsonwebtoken = require("jsonwebtoken");
 let { jwtSignSecret } = require("./lib/config");
 let { tokenVerify } = require("./lib/utils")
 const InitRoute = require("./lib/index");
-
 const app = new Koa();
-require('./sequelize ');
 
 //跨域解决方案
 app.use(Cors({

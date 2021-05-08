@@ -13,6 +13,7 @@
           <transition name="fade-transform" mode="out-in">
             <router-view :key="path"></router-view>
           </transition>
+          <footer-info />
         </el-main>
       </el-container>
     </div>
@@ -22,6 +23,7 @@
 <script>
 import NavbarHouseOwner from "./components/navbar-house-owner";
 import NavbarTenant from "./components/navbar-tenant";
+import FooterInfo from "./components/footer-info";
 import CustomHeader from "@/views/header";
 import { mapGetters } from "vuex";
 export default {
@@ -35,6 +37,7 @@ export default {
     NavbarHouseOwner,
     NavbarTenant,
     CustomHeader,
+    FooterInfo,
   },
   data() {
     return {
@@ -55,6 +58,7 @@ export default {
 <style scoped>
 .admin-container {
   height: 100%;
+  margin-top: 65px;
 }
 </style>
 

@@ -1,7 +1,7 @@
 module.exports = {
     SqlConfig: {
-        DBName: "money_manage",
-        DBOwner: "admin",
+        DBName: "find_house",
+        DBOwner: "root",
         DBPwd: "123456",
     },
     jwtSignSecret: "jwt-token-secret",

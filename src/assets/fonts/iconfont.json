@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4733864",
+      "name": "关注",
+      "font_class": "guanzhu",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "431955",
+      "name": "profile",
+      "font_class": "profile",
+      "unicode": "e7ac",
+      "unicode_decimal": 59308
+    },
+    {
+      "icon_id": "5806928",
+      "name": "9 Upload to Cloud",
+      "font_class": "UploadtoCloud",
+      "unicode": "e8d7",
+      "unicode_decimal": 59607
+    },
+    {
+      "icon_id": "11466696",
+      "name": "customerbaseinfo",
+      "font_class": "customerbaseinfo",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "141405",
       "name": "185078 - email mail streamline",
       "font_class": "185078emailmailstreamline",

@@ -1,14 +1,15 @@
 <template>
   <el-menu
-    :default-active="activeIndex"
+    :default-active="path"
     class="navbar-admin"
     mode="horizontal"
     @select="handleSelect"
   >
     <template v-for="(item, index) in navbarList">
       <el-menu-item
-        :index="item.index"
+        :index="item.path"
         :key="index"
+        @click="LinkTo(item.path)"
         v-if="!item.children"
         class="navbar-item"
       >
@@ -23,9 +24,12 @@
           <i :class="['iconfont', item.icon]"></i>{{ item.text }}
         </template>
         <template v-for="(childItem, k) in item.children">
-          <el-menu-item :key="index + '-' + k" :index="index + '-' + k">{{
-            childItem.text
-          }}</el-menu-item>
+          <el-menu-item
+            @click="LinkTo(item.path)"
+            :key="index + '-' + k"
+            :index="index + '-' + k"
+            >{{ childItem.text }}</el-menu-item
+          >
         </template>
       </el-submenu>
     </template>
@@ -36,18 +40,43 @@
 export default {
   data() {
     return {
-      activeIndex: "1",
+      path: "/admin/index",
       navbarList: [
-        { index: "1", text: "首页", icon: "icon-home-def" },
-        { index: "2", text: "租房", icon: "icon-zufang" },
-        { index: "3", text: "产品动态", icon: "icon-dongtai" },
-        { index: "4", text: "联系我们", icon: "icon-lianxiwomen1" },
-        { index: "5", text: "账户设置", icon: "icon-xingzhuang604" },
+        {
+          index: "1",
+          text: "首页",
+          icon: "icon-home-def",
+          path: "/admin/index",
+        },
+        { index: "2", text: "租房", icon: "icon-zufang", path: "/admin/find-house" },
+        {
+          index: "3",
+          text: "产品动态",
+          icon: "icon-dongtai",
+          path: "/admin/product-status",
+        },
+        // {
+        //   index: "4",
+        //   text: "联系我们",
+        //   icon: "icon-lianxiwomen1",
+        //   path: "/admin/contact-us",
+        // },
+        {
+          index: "5",
+          text: "账户设置",
+          icon: "icon-xingzhuang604",
+          path: "/admin/account-setting",
+        },
       ],
     };
   },
   methods: {
     handleSelect() {},
+    LinkTo(path) {
+      if (path == this.path) return;
+      this.path = path;
+      this.$router.push({ path });
+    },
   },
 };
 </script>
@@ -70,7 +99,7 @@ export default {
 <style lang="scss">
 .navbar-admin {
   .el-menu-item.is-active {
-        color: #409EFF!important;
+    color: #409eff !important;
   }
 }
 </style>

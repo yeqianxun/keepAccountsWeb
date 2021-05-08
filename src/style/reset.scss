@@ -29,6 +29,12 @@ a {
 ::-webkit-scrollbar-corner {
     background: #179a16;
 }
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
 $tagH: 1, 2, 3, 4;
 @each $i in $tagH {
     h#{$i} {

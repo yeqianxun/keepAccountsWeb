@@ -5,10 +5,29 @@ let Admin = [{
     },
     component: () => import("@/views/admin/components/index.vue")
 }, {
-    path: "settings",
+    path: "account-setting",
     meta: {
         requireAuth: true
     },
-    component: () => import("@/views/admin/components/settings.vue")
+    component: () => import("@/views/admin/components/account-setting/index.vue")
+}, {
+    path: "find-house",
+    meta: {
+        requireAuth: true
+    },
+    component: () => import("@/views/admin/components/find-house/index.vue")
+}, {
+    path: "product-status",
+    meta: {
+        requireAuth: true
+    },
+    component: () => import("@/views/admin/components/product-status/index.vue")
+},
+{
+    path: "contact-us",
+    meta: {
+        requireAuth: true
+    },
+    component: () => import("@/views/admin/components/contact-us/index.vue")
 }];
 export default Admin

@@ -1,5 +1,6 @@
+// https://blog.csdn.net/qq_27970999/article/details/89856966
 const Sequelize = require('sequelize');
-let { SqlConfig } = require("./lib/config")
+let { SqlConfig } = require("../lib/config");
 const sequelize = new Sequelize(SqlConfig.DBName, SqlConfig.DBOwner, SqlConfig.DBPwd, {
   host: 'localhost',
   dialect: 'mysql',
@@ -9,7 +10,7 @@ const sequelize = new Sequelize(SqlConfig.DBName, SqlConfig.DBOwner, SqlConfig.D
     acquire: 30000,
     idle: 10000
   }
-})
+});
 sequelize
   .authenticate()
   .then(() => {

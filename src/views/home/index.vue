@@ -31,14 +31,12 @@ export default {
 <style scoped lang="scss" >
 .home-page {
   position: relative;
-  height: 100%;
+  height: 100vh;
   font-size: 14px;
   overflow: hidden;
   .home-wrapper {
     width: 60%;
     margin: 0 auto;
-    // margin-top: 15%;
-    // transform: translateY(50%);
     margin-top: 20vh;
     position: relative;
     .hone-p1 {

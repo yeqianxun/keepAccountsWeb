@@ -61,8 +61,7 @@ export default {
   },
   methods: {
     loginOrRegister() {
-      let URL =
-        this.activeTab == "login" ? "/api/users/login" : "/api/users/register";
+      let URL = this.activeTab == "login" ? "/users/login" : "/users/register";
       this.$Axios({
         method: "POST",
         url: URL,
@@ -75,8 +74,12 @@ export default {
         },
       }).then((res) => {
         if (res.status == "success") {
+          if (this.activeTab == "reg") {
+            this.activeTab = "login";
+            return;
+          }
           window.sessionStorage.setItem("token", res.token);
-          this.$router.push("/admin/index");
+          window.location.href = "/admin/index";
           this.$message({
             message: res.message,
             type: "success",
@@ -131,7 +134,6 @@ export default {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     background: url("~@/assets/images/login-reg.jpg") no-repeat center center;
-    // background-size: 100% 100%;
   }
   .login-form-right {
     width: 40%;

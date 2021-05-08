@@ -1,6 +1,6 @@
 let Op = require("sequelize").Op;
 const jsonwebtoken = require("jsonwebtoken")
-let UserModel = require("../model/users");
+let { UserModel } = require("../model/index.js");
 let { MD5Crypto } = require("../lib/utils")
 let { jwtSignSecret } = require("../lib/config");
 
@@ -61,10 +61,9 @@ let UserController = {
             let saveUser = await UserModel.create({
                 username,
                 password: MD5Crypto(password),
-                isadmin: username == "admin" ? true : false,
-                unit: "λ"
+                usertype: "0",
+                active: false
             });
-            console.log("创建结果", saveUser)
             ctx.body = {
                 status: "success",
                 code: 0,
