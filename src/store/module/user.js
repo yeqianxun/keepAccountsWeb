@@ -15,9 +15,9 @@ export default {
         GET_USERINFO({ state }) {
             return new Promise((resolve, reject) => {
                 getUserInfo().then(res => {
+                    console.log("getuserinfo----", res)
                     resolve(res);
                     if (res) {
-
                         state.userInfo = res;
                     }
                 }).catch(err => {

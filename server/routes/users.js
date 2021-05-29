@@ -4,5 +4,6 @@ let UserController = require("../controllers/user")
 
 router.post("/login", UserController.UserLogin);
 router.post("/register", UserController.UserRegister);
-router.get("/userinfo", UserController.getUserInfo)
+router.get("/userinfo", tokenVerify, UserController.getUserInfo);
+router.post("/uploadAvator", tokenVerify, UserController.uploadAvator)
 module.exports = router;

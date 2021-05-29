@@ -27,6 +27,14 @@ let UserController = {
         return result;
     },
     async getUserInfo(ctx) {
+        let { userid } = ctx.request.query;
+        let userInfo = await UserModel.findOne({
+            where: {
+                username: {
+                    [Op.eq]: username
+                }
+            }
+        })
         ctx.body = {
             status: 200,
             data: "获取用户信息"
@@ -34,6 +42,7 @@ let UserController = {
     },
     async UserLogin(ctx) {
         let result = await UserController.findUserIsExist(ctx);
+
         if (!result) {
             ctx.body = {
                 code: -1,
@@ -43,8 +52,9 @@ let UserController = {
             }
         } else {
             let value = result.dataValues;
+            console.log("value----", value)
             let signToken = jsonwebtoken.sign(
-                { username: value.username, id: result.id }, jwtSignSecret, { expiresIn: 1 * 60 });
+                { username: value.username, id: result.id }, jwtSignSecret, { expiresIn: "1h" });
             ctx.body = {
                 code: 0,
                 status: "success",
@@ -75,6 +85,27 @@ let UserController = {
                 code: -1,
                 message: "用户已存在"
             }
+        }
+    },
+    async uploadAvator(ctx, next) {
+        console.log("uploadAvator---", ctx)
+        if (files) {
+            const reader = fs.createReadStream(files.file.path);
+            const basename = path.basename(files.file.path)
+            let filePath = path.join(__dirname, '../', 'public/images') + `/${basename}`;
+            // 创建可写流
+            const upStream = fs.createWriteStream(filePath);
+            // 可读流通过管道写入可写流
+            reader.pipe(upStream);
+            if (env === 'env') {
+                avatar_url = `${ctx.origin}:8000/api/file/avatar?pic=${basename}`
+            } else {
+                avatar_url = `http://47.112.***.***:80/api/file/avatar?pic=${basename}`
+            }
+        }
+        ctx.body = {
+            code: 300,
+            message: "成功"
         }
     }
 }

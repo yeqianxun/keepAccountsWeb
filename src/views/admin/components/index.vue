@@ -5,7 +5,14 @@
         :carouselArr="carouselArr"
         :swiperOption="swiperOption"
       ></custom-swiper>
-      <search-bar></search-bar>
+      <search-bar :HotCity="HotCity"></search-bar>
+    </div>
+    <div class="admin-index-subtitle">
+      <el-carousel indicator-position="outside" direction="vertical">
+        <el-carousel-item v-for="item in 4" :key="item">
+          <h3>{{ item }}</h3>
+        </el-carousel-item>
+      </el-carousel>
     </div>
   </div>
 </template>
@@ -17,6 +24,7 @@ export default {
   components: { SearchBar, CustomSwiper },
   data() {
     return {
+      HotCity: [],
       carouselArr: [
         {
           id: "001",
@@ -60,15 +68,34 @@ export default {
       },
     };
   },
+  created() {
+    this.$XHR.getAllCity({}).then((res) => {
+      if (res.code == 200 && res.data?.length) {
+        this.HotCity = res.data;
+      }
+    });
+  },
   methods: {},
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .admin-index-box {
   .swiper-box {
     min-height: 368px;
     height: 420px;
     position: relative;
+  }
+  .admin-index-subtitle {
+    height: 60px;
+  }
+}
+</style>
+<style lang="scss">
+.admin-index-box {
+  .el-carousel.el-carousel--vertical,
+  .el-carousel__container {
+    height: 100%;
+    border: 1px solid red;
   }
 }
 </style>

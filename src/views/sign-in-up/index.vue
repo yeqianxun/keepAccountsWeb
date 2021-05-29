@@ -10,8 +10,8 @@
             @click="changeLoginRegister('login')"
             >登录</span
           ><span
-            :class="[activeTab == 'reg' ? 'active' : '']"
-            @click="changeLoginRegister('reg')"
+            :class="[activeTab == 'register' ? 'active' : '']"
+            @click="changeLoginRegister('register')"
             >注册</span
           >
         </h2>
@@ -28,7 +28,8 @@
           </el-form-item>
           <el-form-item aria-placeholder="请输入确认密码">
             <el-input
-              v-show="activeTab == 'reg'"
+              type="password"
+              v-show="activeTab == 'register'"
               v-model="form.pwd2"
               placeholder="请输入确认密码"
             ></el-input>
@@ -61,20 +62,12 @@ export default {
   },
   methods: {
     loginOrRegister() {
-      let URL = this.activeTab == "login" ? "/users/login" : "/users/register";
-      this.$Axios({
-        method: "POST",
-        url: URL,
-        data: {
-          username: this.form.name,
-          password: this.form.pwd,
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
+      this.$XHR[this.activeTab]({
+        username: this.form.name,
+        password: this.form.pwd,
       }).then((res) => {
         if (res.status == "success") {
-          if (this.activeTab == "reg") {
+          if (this.activeTab == "register") {
             this.activeTab = "login";
             return;
           }

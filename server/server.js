@@ -34,12 +34,15 @@ app.use(KoaBody({
 }));
 app.use(json());
 app.use(logger());
+
 // 错误处理
 app.use((ctx, next) => {
   return next().catch((err) => {
     if (err.status === 401) {
       ctx.status = 401;
+      console.log("4014---", ctx);
       ctx.body = {
+        code: 401,
         message: "认证失败"
       }
     } else {

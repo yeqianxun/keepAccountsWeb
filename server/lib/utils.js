@@ -15,11 +15,13 @@ module.exports = {
     },
     async tokenVerify(ctx, next) {
         const { authorization = '' } = ctx.request.header
-        const token = authorization.replace('Bearer ', '')
+        let token = ctx.header.authorization;
         try {
-            const user = jsonwebtoken.verify(token, jwtSignSecret)
-            ctx.state.user = user
+            let payload = await util.promisify(jsonwebtoken.verify)(token.split(' ')[1], jwtSignSecret);
+            ctx.state.payload = payload;
+            console.log("校验中间件---》", payload)
         } catch (e) {
+            console.log("err---》", e)
             ctx.throw(401, e.message)
         }
         await next()

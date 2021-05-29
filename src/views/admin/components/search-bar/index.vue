@@ -4,7 +4,7 @@
       placeholder="请输入您的筛选条件"
       v-model="searchText"
       class="main-search"
-      @focus="handleSearchBarFocus"
+      @focus="showSearchLabel = true"
     >
       <template slot="prepend"
         ><span class="iconfont icon-search"></span
@@ -14,6 +14,11 @@
     <div class="search-labels" v-show="showSearchLabel">
       <search-labels :citys="HotCity"></search-labels>
     </div>
+    <div
+      class="mask"
+      v-show="showSearchLabel"
+      @click="showSearchLabel = false"
+    ></div>
   </div>
 </template>
 
@@ -21,6 +26,12 @@
 <script>
 import SearchLabels from "../search-labels";
 export default {
+  props: {
+    HotCity: {
+      type: Array,
+      default: () => [],
+    },
+  },
   components: {
     SearchLabels,
   },
@@ -28,15 +39,10 @@ export default {
     return {
       searchText: "",
       showSearchLabel: false,
-      HotCity: [],
     };
   },
   mounted() {},
   methods: {
-    handleSearchBarFocus() {
-      console.log("handleSearchBarFocus===");
-      this.showSearchLabel = true;
-    },
     goSearch() {},
   },
 };
@@ -45,13 +51,22 @@ export default {
 <style lang="scss" scoped>
 .search-bar-wrapper {
   height: 60px;
-  width: 60%;
+  width: 800px;
   position: absolute;
   bottom: 100px;
-  left: 20%;
-  z-index: 100;
   border-radius: 4px;
-
+  z-index: 100;
+  left: calc(50% - 400px);
+  .mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 99;
+  }
   .search-labels {
     position: absolute;
     bottom: -300px;
@@ -59,13 +74,16 @@ export default {
     width: 100%;
     height: 300px;
     background: white;
-    box-shadow: 0 0 5px #ccc;
+
+    z-index: 100;
   }
 }
 </style>
 <style lang="scss">
 .main-search {
   height: 100%;
+  position: relative;
+  z-index: 100;
   .el-input-group__prepend {
     padding: 0 10px;
     .icon-search {

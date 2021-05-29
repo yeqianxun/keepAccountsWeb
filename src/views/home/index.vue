@@ -36,6 +36,8 @@ export default {
   overflow: hidden;
   .home-wrapper {
     width: 60%;
+    height: 100%;
+    max-width: 500px;
     margin: 0 auto;
     margin-top: 20vh;
     position: relative;

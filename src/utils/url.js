@@ -1,4 +1,8 @@
 let BaseURL = {
-    userInfo: "/api/users/userinfo"
+    getUserInfo: "/users/userinfo",
+    login: "/users/login",
+    register: "/users/register",
+    getAllCity: "/city/allCity",
+
 }
 export default BaseURL

@@ -7,10 +7,10 @@ let routes = [
         component: () => import("@/views/home")
     },
     {
-        path: "/login",
+        path: "/sign_in_up",
         name: "login",
         meta: { requireAuth: true },
-        component: () => import("@/views/login")
+        component: () => import("@/views/sign-in-up")
     },
     {
         path: "/admin",

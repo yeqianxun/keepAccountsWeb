@@ -5,7 +5,9 @@ import ElementUI from 'element-ui';
 import App from './App.vue'
 import store from "@/store/";
 import routes from "@/router";
-import Axios from "@/utils/http.js";
+
+import XHR from "@/http/index.js";
+
 import vueSwiper from 'vue-awesome-swiper'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'swiper/dist/css/swiper.css'
@@ -16,11 +18,12 @@ import NProgress from "nprogress"; // Progress 进度条
 import "nprogress/nprogress.css"; // Progress 进度条样式
 
 Vue.config.productionTip = false;
-Vue.prototype.$Axios = Axios;
+Vue.prototype.$XHR = XHR;
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(vueSwiper);
+
 let router = new VueRouter({
   mode: "history",
   routes,
@@ -35,11 +38,11 @@ let router = new VueRouter({
 router.beforeEach((to, from, next) => {
   NProgress.start()
   let token = window.sessionStorage.getItem("token");
-  if (to.path == "/login") {
+  if (to.path == "/sign_in_up") {
     token ? next("/") : next();
   } else {
-    if (to.meta.requireAuth == true && !token) {
-      next("/login")
+    if (to.meta.requireAuth && !token) {
+      next("/sign_in_up")
     } else {
       next()
     }
