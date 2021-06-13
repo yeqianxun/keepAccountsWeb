@@ -1,7 +1,7 @@
 const { CityModel, CityRegionModel } = require("../model/index");
 
-let CityController = {
-    async getAllCity(ctx, next) {
+let LabelController = {
+    async getHouseLabel(ctx, next) {
         let cities = await CityModel.findAll({
             // attributes: ["cityname"],
             include: [{
@@ -13,9 +13,11 @@ let CityController = {
         ctx.body = {
             code: 200,
             message: "获取所有城市成功",
-            data: cities
+            data: {
+                cities
+            }
         }
         return
     }
 }
-module.exports = CityController
+module.exports = LabelController

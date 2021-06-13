@@ -1,13 +1,16 @@
 const Koa = require('koa')
+const path = require("path")
 const Cors = require("koa2-cors");
 const json = require('koa-json')
 const onerror = require('koa-onerror')
+const JsonError = require("koa-json-error")
 const KoaBody = require('koa-body')
 const logger = require('koa-logger')
 const koajwt = require("koa-jwt");
-const jsonwebtoken = require("jsonwebtoken");
+const parameter = require('koa-parameter')
+const koaStatic = require("koa-static")
 let { jwtSignSecret } = require("./lib/config");
-let { tokenVerify } = require("./lib/utils")
+let { tokenVerify, getUploadFileExt, getUploadDirName, checkDirExist } = require("./lib/utils")
 const InitRoute = require("./lib/index");
 const app = new Koa();
 
@@ -25,22 +28,40 @@ app.use(Cors({
 
 // error handler
 onerror(app);
-// middlewares
+app.use(JsonError({
+  postFormat: (e, { stack, ...rest }) => process.env.NODE_ENV === 'production' ? rest : { stack, ...rest }
+}));
+
+app.use(koaStatic(path.join(__dirname, 'public/')))
 app.use(KoaBody({
   multipart: true,
   formidable: {
-    maxFileSize: 200 * 1024 * 1024    // 设置上传文件大小最大限制，默认2M
+    maxFileSize: 200 * 1024 * 1024,   // 设置上传文件大小最大限制，默认2M
+    keepExtensions: true,
+    // onFileBegin: (name, file) => {
+    //   // 获取文件后缀
+    //   const ext = getUploadFileExt(file.name);
+    //   // 最终要保存到的文件夹目录
+    //   const dir = path.join(__dirname, `public/upload/`);
+    //   // 检查文件夹是否存在如果不存在则新建文件夹
+    //   // checkDirExist(dir);
+    //   const fileName = file.path.substring(file.path.lastIndexOf("upload"), file.path.length)
+    //   // 重新覆盖 file.path 属性
+    //   file.path = `${dir}/${fileName}`;
+    // },
+    onError: (err) => {
+      console.log(err);
+    }
   }
 }));
 app.use(json());
 app.use(logger());
-
+app.use(parameter(app))
 // 错误处理
 app.use((ctx, next) => {
   return next().catch((err) => {
     if (err.status === 401) {
       ctx.status = 401;
-      console.log("4014---", ctx);
       ctx.body = {
         code: 401,
         message: "认证失败"
@@ -53,7 +74,7 @@ app.use((ctx, next) => {
 // auth
 app.use(koajwt({ secret: jwtSignSecret }).unless({
   // 登录,注册接口不需要验证
-  path: [/^\/users\/login/, /^\/users\/register/]
+  path: [/^\/users\/login/, /^\/users\/register/, /^\/public/]
 }));
 // logger
 app.use(async (ctx, next) => {

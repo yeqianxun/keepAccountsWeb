@@ -1,7 +1,7 @@
 module.exports = function (Sequelize, DataTypes) {
     return Sequelize.define("houselabel", {
-        labelid: { type: DataTypes.BIGINT(11), primarykey: true, allowNull: false, unique: true, comment: "房屋id" },
-        labelname: { type: DataTypes.STRING, allowNull: false, comment: "标签名" }
+        label_id: { type: DataTypes.UUID, primaryKey: true, allowNull: false, unique: true, defaultValue: DataTypes.UUIDV1 },
+        label_name: { type: DataTypes.STRING, allowNull: false, comment: "标签名" }
     }, {
         timestamps: true,
         underscored: true,

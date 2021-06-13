@@ -1,16 +1,5 @@
 const router = require("koa-router")({ "prefix": "" });
-// const Admin = require('../controllers/admin');
+const adminController = require("../controllers/admin");
 
-router.get('/', async (ctx, next) => {
-  ctx.body = {
-    message: "后台请求首页sss"
-  }
-})
-
-router.get('/test', async (ctx, next) => {
-  ctx.body = {
-    message: "后台请求首页ddd"
-  }
-})
-
+router.get('/getCarouselText', adminController.getCarouselText);
 module.exports = router
