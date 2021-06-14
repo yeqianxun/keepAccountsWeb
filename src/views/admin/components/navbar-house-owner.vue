@@ -48,7 +48,12 @@ export default {
           icon: "icon-home-def",
           path: "/admin/index",
         },
-        { index: "2", text: "租房", icon: "icon-zufang", path: "/admin/find-house" },
+        {
+          index: "2",
+          text: "租房",
+          icon: "icon-zufang",
+          path: "/admin/find-house",
+        },
         // {
         //   index: "3",
         //   text: "产品动态",

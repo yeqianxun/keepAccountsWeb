@@ -14,8 +14,12 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <template v-for="item in 3">
-      <rent-together :key="item" :houseList="houseList"></rent-together>
+    <template v-for="(item, index) in 3">
+      <rent-together
+        :rentType="rentType[index]"
+        :key="item"
+        :houseList="houseList"
+      ></rent-together>
     </template>
   </div>
 </template>
@@ -28,6 +32,7 @@ export default {
     return {
       carousel: [],
       houseList: [],
+      rentType: ["合租房", "整租房", "公寓房"],
       carouselArr: [
         {
           id: "001",

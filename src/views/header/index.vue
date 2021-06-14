@@ -31,7 +31,7 @@ header {
   width: 100%;
   min-width: 960px;
   border-bottom: 1px solid #f0f0f0;
-  box-shadow: 0 0 5px #ccc;
+  // box-shadow: 0 0 5px #ccc;
   background: #fff;
   z-index: 1000;
   .logo-link {

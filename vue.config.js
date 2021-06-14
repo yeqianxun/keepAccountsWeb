@@ -2,12 +2,13 @@ const path = require("path");
 const resolve = dir => path.join(__dirname, dir);
 module.exports = {
     outputDir: process.env.VUE_APP_DIR_NAME,
+    productionSourceMap: false,
     devServer: {
         port: "8888",
         open: true,
         hotOnly: true,
         compress: true,
-        disableHostCheck: true, 
+        disableHostCheck: true,
         proxy: {
             '^/api': {
                 target: 'http://localhost:3333',
@@ -31,9 +32,9 @@ module.exports = {
                 .options({
                     // 公用scss
                     resources: [
-                        path.join(__dirname,"./src/style/common.scss"),
-                        path.join(__dirname,"./src/style/color.scss"),
-                        path.join(__dirname,"./src/style/mixin.scss")
+                        path.join(__dirname, "./src/style/common.scss"),
+                        path.join(__dirname, "./src/style/color.scss"),
+                        path.join(__dirname, "./src/style/mixin.scss")
                     ]
                 })
                 .end();

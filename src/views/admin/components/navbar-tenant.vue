@@ -103,8 +103,8 @@ export default {
 </style>
 <style lang="scss">
 .navbar-admin {
-  .el-menu-item.is-active {
-    color: #409eff !important;
-  }
+  // .el-menu-item.is-active {
+  //   color: #409eff !important;
+  // }
 }
 </style>
