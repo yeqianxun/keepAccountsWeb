@@ -22,7 +22,7 @@ sequelize
 
 // 根据模型自动创建表
 sequelize.sync({
-  // alter: true,
+  alter: true,
   logging: console.log
 })
 

@@ -2,10 +2,12 @@ let Crypto = require("crypto");
 let util = require("util");
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 const jsonwebtoken = require("jsonwebtoken");
 let { jwtSignSecret } = require("../lib/config");
+let { HouseImgModel } = require("../model/index.js");
 
-module.exports = {
+let utils = {
     MD5Crypto(str) {
         // 签名对象
         // let obj = crypto.createHash('md5');
@@ -57,6 +59,23 @@ module.exports = {
         let ext = name.split('.');
         return ext[ext.length - 1];
     },
-    
+    async uploadImages(ctx, _localFilePath, houseItem) {
+        let _basename = path.basename(_localFilePath);
+        let houseImgUploadPath = path.join(__dirname, "..", `public/house_image/${houseItem.house_id}/`);
+        utils.checkDirExist(houseImgUploadPath);
+        try {
+            let reader = fs.createReadStream(_localFilePath);
+            let _uuid = uuidv4()
+            let writer = fs.createWriteStream(houseImgUploadPath + `${_uuid}.${utils.getUploadFileExt(_basename)}`);
+            reader.pipe(writer);
+            let saveImgHouse = await HouseImgModel.create({
+                url: `${ctx.origin}/house_image/${houseItem.house_id}/${_uuid}.${utils.getUploadFileExt(path.basename(_basename))}`,
+                houseinfoHouseId: houseItem.house_id
+            });
+        } catch (e) {
+            console.log("uploadimage---error", e)
+        }
 
+    }
 }
+module.exports = utils

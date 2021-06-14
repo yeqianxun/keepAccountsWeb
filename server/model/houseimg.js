@@ -3,7 +3,7 @@ module.exports = function (Sequelize, DataTypes) {
         imgid: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false, unique: true },
         url: { type: DataTypes.STRING, allowNull: false, comment: "房屋图片" }
     }, {
-        timestamps: false,
+        timestamps: true,
         underscored: true,
         freezeTableName: true,
         tableName: 'houseimg',

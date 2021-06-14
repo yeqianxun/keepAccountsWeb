@@ -10,7 +10,6 @@ const koajwt = require("koa-jwt");
 const parameter = require('koa-parameter')
 const koaStatic = require("koa-static")
 let { jwtSignSecret } = require("./lib/config");
-let { tokenVerify, getUploadFileExt, getUploadDirName, checkDirExist } = require("./lib/utils")
 const InitRoute = require("./lib/index");
 const app = new Koa();
 
@@ -32,7 +31,8 @@ app.use(JsonError({
   postFormat: (e, { stack, ...rest }) => process.env.NODE_ENV === 'production' ? rest : { stack, ...rest }
 }));
 
-app.use(koaStatic(path.join(__dirname, 'public/')))
+app.use(koaStatic(path.join(__dirname, 'public/')));
+// app.use(koaStatic(path.join(__dirname, 'house_image/')));
 app.use(KoaBody({
   multipart: true,
   formidable: {
