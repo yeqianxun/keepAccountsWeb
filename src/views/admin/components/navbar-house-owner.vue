@@ -54,18 +54,6 @@ export default {
           icon: "icon-zufang",
           path: "/admin/find-house",
         },
-        // {
-        //   index: "3",
-        //   text: "产品动态",
-        //   icon: "icon-dongtai",
-        //   path: "/admin/product-status",
-        // },
-        // {
-        //   index: "4",
-        //   text: "联系我们",
-        //   icon: "icon-lianxiwomen1",
-        //   path: "/admin/contact-us",
-        // },
         {
           index: "5",
           text: "账户设置",
@@ -88,14 +76,12 @@ export default {
 <style lang="scss" scoped>
 .navbar-admin {
   margin-left: auto;
-  // background: #202329;
   .iconfont {
     margin-right: 10px;
   }
   .navbar-item {
     font-size: 16px;
     &:hover {
-      // color: white !important;
       background: transparent !important;
     }
   }
