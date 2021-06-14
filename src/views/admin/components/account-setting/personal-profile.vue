@@ -1,35 +1,54 @@
 <template>
   <div class="personal-profile">
-    <el-upload
-      action="/api/users/uploadAvator"
-      list-type="picture-card"
-      :show-file-list="false"
-      :with-credentials="true"
-      :on-success="handleUploadSuccess"
-      :before-upload="beforeUploadUpload"
-    >
-      <figure>
-        <figcaption>修改头像</figcaption>
-        <img :src="avatarURL" />
-      </figure>
-    </el-upload>
+    <div class="avator-img">
+      <img :src="userInfoForm.avator" />
+      <el-upload
+        ref="uploader"
+        action="/api/users/uploadAvator"
+        list-type="picture-card"
+        :headers="headerObj"
+        name="file"
+        :show-file-list="false"
+        :with-credentials="true"
+        :auto-upload="false"
+        :on-change="handleChange"
+        :on-success="handleUploadSuccess"
+        :before-upload="beforeUploadUpload"
+      >
+        <div class="change-avator">
+          <span class="text"> 修改头像</span>
+        </div>
+      </el-upload>
+    </div>
     <el-row>
-      <el-col>
+      <el-col :span="12">
         <el-form
           ref="form"
-          class="user-baseinfo"
+          :class="[isEdit ? 'blank' : '', 'user-baseinfo']"
           :model="userInfoForm"
           label-width="120px"
+          @submit.native.prevent="submit"
         >
           <template v-for="item in baseInfo">
             <el-form-item
-              :key="item.text"
-              :label="item.text"
-              :prop="userInfoForm[item.prop]"
+              :key="item.label"
+              :label="item.label"
+              :prop="item.propName"
             >
-              <component :is="item.componentName" size="small"></component>
+              <component
+                :disabled="item.disabled"
+                :is="item.componentName"
+                v-model="userInfoForm[item.propName]"
+                size="small"
+              ></component>
             </el-form-item>
           </template>
+          <el-form-item>
+            <el-button size="small" @click="editUserInfo">编辑</el-button>
+            <el-button type="primary" size="small" @click="submitForm"
+              >提交</el-button
+            >
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
@@ -37,58 +56,89 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   data() {
     return {
+      isEdit: true,
+      headerObj: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+      },
       userInfoForm: {
-        nickName: "",
+        username: "",
         email: "",
         mobile: "",
-        receiveNotice: true,
+        active: true,
+        avator: require("../../../../assets/images/me.png"),
       },
       baseInfo: [
         {
-          text: "昵称：",
+          label: "昵称：",
           componentName: "el-input",
-          prop: "nickName",
-          disabled: false,
+          propName: "username",
+          disabled: true,
         },
         {
-          text: "电子邮件：",
+          label: "电子邮件：",
           componentName: "el-input",
-          prop: "email",
-          disabled: false,
+          propName: "email",
+          disabled: true,
         },
         {
-          text: "手机号码：",
+          label: "手机号码：",
           componentName: "el-input",
-          prop: "email",
-          disabled: false,
+          propName: "mobile",
+          disabled: true,
         },
         {
-          text: "接收消息：",
-          componentName: "el-radio",
-          prop: "email",
+          label: "是否接收消息：",
+          componentName: "el-switch",
+          propName: "active",
           disabled: false,
         },
       ],
-      avatarURL: require("../../../../assets/images/me.png"),
     };
   },
+  created() {
+    Object.keys(this.userInfoForm).forEach((prop) => {
+      this.userInfoForm[prop] = this.userInfo[prop];
+    });
+  },
   methods: {
-    handleUploadSuccess(file) {
-      this.avatarURL = URL.createObjectURL(file.raw);
+    editUserInfo() {
+      this.isEdit = !this.isEdit;
+      this.baseInfo = this.baseInfo.map((item) => {
+        if (item.componentName == "el-input") {
+          item.disabled = !this.isEdit ? false : true;
+        }
+        return item;
+      });
     },
-    beforeUploadUpload() {
-      // const isJPG = file.type === "image/jpeg";
-      // const isLt2M = file.size / 1024 / 1024 < 2;
-      // if (!isJPG) {
-      //   this.$message.error("上传头像图片只能是 JPG 格式!");
-      // }
-      // if (!isLt2M) {
-      //   this.$message.error("上传头像图片大小不能超过 2MB!");
-      // }
-      // return isJPG && isLt2M;
+    submitForm() {
+      this.$refs.uploader.submit();
+      this.$XHR.updateUserInfo(this.userInfoForm).then((res) => {
+        if (res.code == 200 && !res.data.length) {
+          this.editUserInfo();
+          this.$store.dispatch("user/GET_USERINFO");
+          this.$message.success("信息修改成功");
+        }
+      });
+    },
+    handleChange(file) {
+      this.userInfoForm.avator = URL.createObjectURL(file.raw);
+    },
+    handleUploadSuccess(file) {
+      this.userInfoForm.avator = file.data;
+    },
+    beforeUploadUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isLt2M;
     },
   },
 };
@@ -96,47 +146,56 @@ export default {
 
 <style lang="scss" scoped>
 .personal-profile {
-  figure {
-    width: 100px;
+  margin-left: 100px;
+  .avator-img {
+    width: 200px;
     height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     position: relative;
-    margin: 0 auto;
-    cursor: pointer;
     img {
-      width: 100%;
-      height: 100%;
-      display: block;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      position: absolute;
-      top: 0;
-      left: 0;
     }
-    figcaption {
-      position: absolute;
-      bottom: -32px;
-      left: 0;
-      z-index: 2;
-      color: #42c02e;
-      width: 100%;
-      height: 30px;
+    .change-avator {
       text-align: center;
-      border-radius: 8px;
-      border: 1px solid rgba(59, 194, 29, 0.7);
+      position: absolute;
+      line-height: 100px;
+      width: 100px;
+      .text {
+        border: 1px solid rgba(59, 194, 29, 0.7);
+        color: #42c02e !important;
+        border-radius: 15px;
+        display: inline-block;
+        padding: 0px 8px;
+        line-height: 25px;
+        font-size: 14px;
+      }
     }
   }
   .user-baseinfo {
-    margin: 60px;
+    margin: 0px;
   }
 }
 </style>
 <style lang="scss">
 .personal-profile {
-  .el-upload--picture-card,
-  .el-upload-dragger {
-    width: 100px;
+  .el-upload--picture-card {
     height: 100px;
+    width: 100px;
     border: 0;
-    line-height: 30px;
+    line-height: 1;
+    background: transparent;
+  }
+  .blank {
+    .el-input__inner {
+      border: 1px solid transparent;
+    }
+  }
+  .el-input.is-disabled .el-input__inner {
+    cursor: pointer;
   }
 }
 </style>

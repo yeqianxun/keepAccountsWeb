@@ -29,5 +29,13 @@ let Admin = [{
         requireAuth: true
     },
     component: () => import("@/views/admin/components/contact-us/index.vue")
-}];
+},
+{
+    path: "house-detail",
+    meta: {
+        requireAuth: true
+    },
+    component: () => import("@/views/admin/components/house-detail/index.vue")
+},
+];
 export default Admin

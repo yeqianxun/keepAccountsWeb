@@ -21,4 +21,10 @@ export function register(data) {
         data
     });
 }
-
+export function updateUserInfo(data) {
+    return http({
+        method: "POST",
+        url: BaseURL.updateUserInfo,
+        data
+    });
+}

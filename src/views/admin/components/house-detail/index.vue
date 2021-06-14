@@ -1,5 +1,5 @@
 <template>
-  <div class="account-settings">房源查找</div>
+  <div>房屋详情</div>
 </template>
 
 <script>

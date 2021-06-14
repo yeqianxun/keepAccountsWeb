@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      activeTab: "PersonalProfile",
+      activeTab: "ReleaseHouseResource",
       asideBars: [
         {
           text: "个人资料",

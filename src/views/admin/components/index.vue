@@ -5,26 +5,29 @@
         :carouselArr="carouselArr"
         :swiperOption="swiperOption"
       ></custom-swiper>
-      <search-bar :HotCity="HotCity"></search-bar>
+      <search-bar></search-bar>
     </div>
     <div class="admin-index-subtitle">
       <el-carousel indicator-position="outside" direction="vertical">
-        <el-carousel-item v-for="item in 4" :key="item">
-          <h3>{{ item }}</h3>
+        <el-carousel-item v-for="item in carousel" :key="item.carousel_id">
+          <h3>{{ item.carousel_text }}</h3>
         </el-carousel-item>
       </el-carousel>
     </div>
+    <template v-for="item in 3">
+      <rent-together :key="item" :houseList="houseList"></rent-together>
+    </template>
   </div>
 </template>
 
 <script>
-import SearchBar from "./search-bar";
-import CustomSwiper from "./custom-swiper";
+import { RentTogether, SearchBar, CustomSwiper } from "./index.js";
 export default {
-  components: { SearchBar, CustomSwiper },
+  components: { RentTogether, SearchBar, CustomSwiper },
   data() {
     return {
-      HotCity: [],
+      carousel: [],
+      houseList: [],
       carouselArr: [
         {
           id: "001",
@@ -69,13 +72,20 @@ export default {
     };
   },
   created() {
-    this.$XHR.getAllCity({}).then((res) => {
-      if (res.code == 200 && res.data?.length) {
-        this.HotCity = res.data;
-      }
+    this.getCarouselText();
+    this.$XHR.getAllHouseInfo({}).then((res) => {
+      this.houseList = res.data;
     });
   },
-  methods: {},
+  methods: {
+    getCarouselText() {
+      this.$XHR.getCarouselText({}).then((res) => {
+        if (res?.data?.length) {
+          this.carousel = res.data;
+        }
+      });
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -87,6 +97,9 @@ export default {
   }
   .admin-index-subtitle {
     height: 60px;
+    line-height: 60px;
+    width: 1024px;
+    margin: 0 auto;
   }
 }
 </style>
@@ -95,7 +108,6 @@ export default {
   .el-carousel.el-carousel--vertical,
   .el-carousel__container {
     height: 100%;
-    border: 1px solid red;
   }
 }
 </style>

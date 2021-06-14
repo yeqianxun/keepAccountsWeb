@@ -21,7 +21,9 @@ Vue.config.productionTip = false;
 Vue.prototype.$XHR = XHR;
 
 Vue.use(VueRouter);
-Vue.use(ElementUI);
+Vue.use(ElementUI, {
+  size: "small"
+});
 Vue.use(vueSwiper);
 
 let router = new VueRouter({
@@ -37,13 +39,15 @@ let router = new VueRouter({
 });
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  let token = window.sessionStorage.getItem("token");
+  let token = window.localStorage.getItem("token");
   if (to.path == "/sign_in_up") {
     token ? next("/") : next();
   } else {
     if (to.meta.requireAuth && !token) {
       next("/sign_in_up")
     } else {
+
+      to.path != "/" && store.dispatch("user/GET_USERINFO");
       next()
     }
   }

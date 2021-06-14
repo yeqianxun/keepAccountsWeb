@@ -1,8 +1,11 @@
 let BaseURL = {
+    getCarouselText: "/getCarouselText",
     getUserInfo: "/users/userinfo",
     login: "/users/login",
     register: "/users/register",
-    getAllCity: "/city/allCity",
-
+    getHouseLabel: "/label/house-label",
+    updateUserInfo: "/users/updateUserInfo",
+    uploadHouse: "/house/uploadHouse",
+    getAllHouseInfo: "/house/getAllHouseInfo"
 }
 export default BaseURL

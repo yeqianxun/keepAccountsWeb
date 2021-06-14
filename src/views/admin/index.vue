@@ -4,7 +4,12 @@
       <custom-header>
         <component :is="componentName" slot="sidebar"></component>
         <div class="user-info" slot="account">
-          <span>{{ userInfo.userName }}</span>
+          <img
+            class="avator"
+            :src="userInfo.avator"
+            :title="userInfo.username"
+            :alt="userInfo.username"
+          />
           <span class="iconfont icon-quit" @click="loginOut"></span>
         </div>
       </custom-header>
@@ -39,6 +44,9 @@ export default {
     CustomHeader,
     FooterInfo,
   },
+  created() {
+    this.$store.dispatch("label/GET_HOUSE_LABEL");
+  },
   data() {
     return {
       componentName: "NavbarTenant",
@@ -46,7 +54,7 @@ export default {
   },
   methods: {
     loginOut() {
-      window.sessionStorage.removeItem("token");
+      window.localStorage.removeItem("token");
       this.$router.push({
         path: "/",
       });
@@ -76,8 +84,16 @@ export default {
     }
   }
   .user-info {
+    display: flex;
+    align-items: center;
+    .avator {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
     span {
-      vertical-align: middle;
+      padding: 0 4px;
       color: #909399;
       cursor: pointer;
       &:last-child {

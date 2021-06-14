@@ -15,7 +15,12 @@
             >注册</span
           >
         </h2>
-        <el-form v-model="form" :rules="rules" class="form-wrapper">
+        <el-form
+          v-model="form"
+          :rules="rules"
+          class="form-wrapper"
+          @submit.native.prevent
+        >
           <el-form-item aria-placeholder="请输入账号">
             <el-input v-model="form.name" placeholder="请输入账号"></el-input>
           </el-form-item>
@@ -35,7 +40,12 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button size="small" @click="loginOrRegister">提交</el-button>
+            <el-button
+              size="small"
+              native-type="submit"
+              @click="loginOrRegister"
+              >提交</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -71,8 +81,10 @@ export default {
             this.activeTab = "login";
             return;
           }
-          window.sessionStorage.setItem("token", res.token);
+          window.localStorage.setItem("token", res.token);
+          // this.$store.commit("user/SET_USER_TOKEN", res.token);
           window.location.href = "/admin/index";
+
           this.$message({
             message: res.message,
             type: "success",

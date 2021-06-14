@@ -11,8 +11,8 @@
       ></template>
       <template slot="append" @click="goSearch">搜索</template>
     </el-input>
-    <div class="search-labels" v-show="showSearchLabel">
-      <search-labels :citys="HotCity"></search-labels>
+    <div class="search-labels" v-if="showSearchLabel">
+      <search-labels></search-labels>
     </div>
     <div
       class="mask"
@@ -26,12 +26,6 @@
 <script>
 import SearchLabels from "../search-labels";
 export default {
-  props: {
-    HotCity: {
-      type: Array,
-      default: () => [],
-    },
-  },
   components: {
     SearchLabels,
   },
@@ -57,6 +51,7 @@ export default {
   border-radius: 4px;
   z-index: 100;
   left: calc(50% - 400px);
+
   .mask {
     position: fixed;
     top: 0;
@@ -74,8 +69,9 @@ export default {
     width: 100%;
     height: 300px;
     background: white;
-
+    box-shadow: 0 0 5px #ccc;
     z-index: 100;
+    overflow: auto;
   }
 }
 </style>

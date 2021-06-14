@@ -54,12 +54,12 @@ export default {
           icon: "icon-zufang",
           path: "/admin/find-house",
         },
-        {
-          index: "3",
-          text: "产品动态",
-          icon: "icon-dongtai",
-          path: "/admin/product-status",
-        },
+        // {
+        //   index: "3",
+        //   text: "产品动态",
+        //   icon: "icon-dongtai",
+        //   path: "/admin/product-status",
+        // },
         // {
         //   index: "4",
         //   text: "联系我们",
