@@ -27,12 +27,14 @@
 import MyMessage from "./my-message..vue";
 import PersonalProfile from "./personal-profile.vue";
 import MyFollow from "./my-follow.vue";
+import MyHouse from "./my-house.vue";
 import ReleaseHouseResource from "./release-house-resource.vue";
 
 export default {
   components: {
     MyMessage,
     MyFollow,
+    MyHouse,
     PersonalProfile,
     ReleaseHouseResource,
   },
@@ -62,6 +64,12 @@ export default {
           text: "发布房源",
           icon: "icon-UploadtoCloud",
           componentName: "ReleaseHouseResource",
+          isHouseOwner: true,
+        },
+           {
+          text: "我的房源",
+          icon: "icon-zufang",
+          componentName: "MyHouse",
           isHouseOwner: true,
         },
       ],

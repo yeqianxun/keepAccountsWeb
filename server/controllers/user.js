@@ -2,22 +2,41 @@ let Op = require("sequelize").Op;
 const fs = require("fs");
 const path = require("path")
 const jsonwebtoken = require("jsonwebtoken")
-let { UserModel } = require("../model/index.js");
-let { MD5Crypto, checkDirExist, getUploadFileExt } = require("../lib/utils")
-let { jwtSignSecret } = require("../lib/config");
+let {
+    UserModel
+} = require("../model/index.js");
+let {
+    MD5Crypto,
+    checkDirExist,
+    getUploadFileExt
+} = require("../lib/utils")
+let {
+    jwtSignSecret
+} = require("../lib/config");
 
 
 let UserController = {
     async findUserIsExist(ctx) {
         ctx.verifyParams({
-            username: { type: "string", required: true, allowEmpty: false },
-            password: { type: "string", required: true, allowEmpty: false }
+            username: {
+                type: "string",
+                required: true,
+                allowEmpty: false
+            },
+            password: {
+                type: "string",
+                required: true,
+                allowEmpty: false
+            }
         })
-        let { username, password } = ctx.request.body;
+        let {
+            username,
+            password
+        } = ctx.request.body;
         if (!username || !password) {
             ctx.body = {
                 code: -1,
-                status: "faile",
+                status: "fail",
                 message: "用户名或密码不存在"
             }
             return
@@ -33,9 +52,13 @@ let UserController = {
         return result;
     },
     async getUserInfo(ctx) {
-        let { uid } = ctx.state.payload;
+        let {
+            uid
+        } = ctx.state.payload;
         let userInfo = await UserModel.findOne({
-            attributes: { exclude: ["password"] },
+            attributes: {
+                exclude: ["password"]
+            },
             where: {
                 uid: {
                     [Op.eq]: uid
@@ -59,8 +82,12 @@ let UserController = {
             }
         } else {
             let value = result.dataValues;
-            let signToken = jsonwebtoken.sign(
-                { username: value.username, uid: value.uid }, jwtSignSecret, { expiresIn: "1h" });
+            let signToken = jsonwebtoken.sign({
+                username: value.username,
+                uid: value.uid
+            }, jwtSignSecret, {
+                expiresIn: "1h"
+            });
             ctx.body = {
                 code: 0,
                 status: "success",
@@ -71,7 +98,10 @@ let UserController = {
         }
     },
     async UserRegister(ctx) {
-        let { username, password } = ctx.request.body
+        let {
+            username,
+            password
+        } = ctx.request.body
         let result = await UserController.findUserIsExist(ctx);
         if (!result) {
             let saveUser = await UserModel.create({
@@ -96,7 +126,9 @@ let UserController = {
     // https://segmentfault.com/a/1190000021996824
     async uploadAvator(ctx, next) {
         if (ctx.request.files) {
-            let { uid } = ctx.state.payload;
+            let {
+                uid
+            } = ctx.state.payload;
             let _filePath = ctx.request.files.file.path
             const basename = path.basename(_filePath);
             const avatorUploadDir = path.join(__dirname, "..", `public/avator/`)
@@ -106,7 +138,9 @@ let UserController = {
                 let writer = fs.createWriteStream(avatorUploadDir + `${uid}.${getUploadFileExt(basename)}`);
                 reader.pipe(writer);
                 const remotePath = `${ctx.origin}/avator/${uid}.${getUploadFileExt(basename)}`;
-                let result = await UserModel.update({ avator: remotePath }, {
+                let result = await UserModel.update({
+                    avator: remotePath
+                }, {
                     where: {
                         uid: uid
                     }
@@ -123,10 +157,20 @@ let UserController = {
         }
     },
     async updateUserInfo(ctx, next) {
-        let { uid } = ctx.state.payload;
-        let { username, email, mobile, active } = ctx.request.body;
+        let {
+            uid
+        } = ctx.state.payload;
+        let {
+            username,
+            email,
+            mobile,
+            active
+        } = ctx.request.body;
         let result = await UserModel.update({
-            username, email, mobile, active
+            username,
+            email,
+            mobile,
+            active
         }, {
             where: {
                 uid: uid

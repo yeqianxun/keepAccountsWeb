@@ -8,7 +8,7 @@ const KoaBody = require('koa-body')
 const logger = require('koa-logger')
 const koajwt = require("koa-jwt");
 const parameter = require('koa-parameter')
-const koaStatic = require("koa-static")
+const koaStatic = require("koa-static");
 let { jwtSignSecret } = require("./lib/config");
 const InitRoute = require("./lib/index");
 const app = new Koa();
@@ -16,15 +16,17 @@ const app = new Koa();
 //跨域解决方案
 app.use(Cors({
   origin: function (ctx) {
-    return "http://localhost:8888"//指定的请求域名+端口
+    // return "http://192.168.0.108:8888"//指定的请求域名+端口
+    return "*"
   },
+
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],//表明服务器支持的所有头信息字
   maxAge: 5,
   credentials: true,//表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中
   allowMethods: ['GET', 'POST', 'DELETE', 'PUT'], //设置允许的HTTP请求类型
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],//前端请求头
+  allowHeaders: ['X-Requested-With', 'Access-Control-Allow-Origin',
+    'X-HTTP-Method-Override', 'Content-Type', 'Authorization', 'Accept'],//前端请求头
 }));
-
 // error handler
 onerror(app);
 app.use(JsonError({
@@ -32,7 +34,7 @@ app.use(JsonError({
 }));
 
 app.use(koaStatic(path.join(__dirname, 'public/')));
-// app.use(koaStatic(path.join(__dirname, 'house_image/')));
+
 app.use(KoaBody({
   multipart: true,
   formidable: {
@@ -74,7 +76,7 @@ app.use((ctx, next) => {
 // auth
 app.use(koajwt({ secret: jwtSignSecret }).unless({
   // 登录,注册接口不需要验证
-  path: [/^\/users\/login/, /^\/users\/register/, /^\/public/]
+  path: [/^\/users\/login/, /^\/users\/register/, /^\/public/, /^\/chat/, /^\/socket.io/]
 }));
 // logger
 app.use(async (ctx, next) => {

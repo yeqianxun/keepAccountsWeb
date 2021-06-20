@@ -11,13 +11,22 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '^/api': {
-                target: 'http://localhost:3333',
+                target: 'http://192.168.0.108:3333',
                 changeOrigin: true,
                 // ws: true,
                 pathRewrite: {
                     '^/api': ''
                 }
-            }
+            },
+            '^/chat': {
+                target: 'http://192.168.0.108:3333',
+                changeOrigin: true,
+            },
+            '/socket.io': {
+                target: 'http://192.168.0.108:3333',
+                ws: true,
+                changeOrigin: true
+            },
         }
     },
     chainWebpack: config => {

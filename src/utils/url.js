@@ -6,6 +6,7 @@ let BaseURL = {
     getHouseLabel: "/label/house-label",
     updateUserInfo: "/users/updateUserInfo",
     uploadHouse: "/house/uploadHouse",
-    getAllHouseInfo: "/house/getAllHouseInfo"
+    getAllHouseInfo: "/house/getAllHouseInfo",
+    getHouseDetail: "/house/getHouseDetail"
 }
 export default BaseURL

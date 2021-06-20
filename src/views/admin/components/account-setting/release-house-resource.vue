@@ -29,6 +29,7 @@
             <el-select v-model="formObj.house_type" placeholder="请选择">
               <el-option value="0" label="合租"></el-option>
               <el-option value="1" label="整租"></el-option>
+              <el-option value="2" label="公寓"></el-option>
             </el-select>
           </el-form-item>
           <template v-for="item in HouseResource">
@@ -121,23 +122,23 @@ export default {
       formData: null,
       layoutOtions: [
         {
-          value: "一居室",
+          value: "1",
           label: "一居室",
         },
         {
-          value: "二居室",
+          value: "2",
           label: "二居室",
         },
         {
-          value: "三居室",
+          value: "3",
           label: "三居室",
         },
         {
-          value: "四居室",
+          value: "4",
           label: "四居室",
         },
         {
-          value: "四居室以上",
+          value: "5",
           label: "四居室以上",
         },
       ],
@@ -272,11 +273,15 @@ export default {
               );
             }
           });
-          this.$XHR.uploadHouse(this.formData).then(() => {
-            this.$refs.houseUploadForm.resetFields();
-            this.formData = null;
-            this.fileList = [];
-          });
+          this.$XHR
+            .uploadHouse(this.formData, {
+              "Content-Type": "multipart/form-data; charset=utf-8",
+            })
+            .then(() => {
+              this.$refs.houseUploadForm.resetFields();
+              this.formData = null;
+              this.fileList = [];
+            });
         }
       });
     },

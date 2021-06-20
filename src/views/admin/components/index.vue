@@ -14,11 +14,11 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <template v-for="(item, index) in 3">
+    <template v-for="item in rentType">
       <rent-together
-        :rentType="rentType[index]"
-        :key="item"
-        :houseList="houseList"
+        :HouseList="item.houseList"
+        :hosueType="item.text"
+        :key="item.type"
       ></rent-together>
     </template>
   </div>
@@ -27,12 +27,28 @@
 <script>
 import { RentTogether, SearchBar, CustomSwiper } from "./index.js";
 export default {
+  name: "AdminHome",
   components: { RentTogether, SearchBar, CustomSwiper },
   data() {
     return {
       carousel: [],
-      houseList: [],
-      rentType: ["合租房", "整租房", "公寓房"],
+      rentType: [
+        {
+          text: "合租房",
+          houseList: [],
+          type: "0",
+        },
+        {
+          text: "整租房",
+          houseList: [],
+          type: "1",
+        },
+        {
+          text: "公寓房",
+          houseList: [],
+          type: "2",
+        },
+      ],
       carouselArr: [
         {
           id: "001",
@@ -79,7 +95,15 @@ export default {
   created() {
     this.getCarouselText();
     this.$XHR.getAllHouseInfo({}).then((res) => {
-      this.houseList = res.data;
+      res.data?.length &&
+        res.data.map((item) => {
+          this.rentType = this.rentType.map((k) => {
+            if (item.house_type.indexOf(k.type) > -1) {
+              k.houseList.push(item);
+            }
+            return k;
+          });
+        });
     });
   },
   methods: {

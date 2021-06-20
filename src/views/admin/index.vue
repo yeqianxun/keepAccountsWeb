@@ -3,6 +3,7 @@
     <div class="admin-index-wrapper">
       <custom-header>
         <component :is="componentName" slot="sidebar"></component>
+
         <div class="user-info" slot="account">
           <img
             class="avator"
@@ -15,7 +16,7 @@
       </custom-header>
       <el-container>
         <el-main>
-          <transition name="fade-transform" mode="out-in">
+          <transition name="slide-fade" mode="out-in">
             <router-view :key="path"></router-view>
           </transition>
           <footer-info />
@@ -63,10 +64,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .admin-container {
   height: 100%;
   margin-top: 65px;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter,
+.slide-fade-leave-active {
+  // padding-top: 100px;
+  opacity: 0;
 }
 </style>
 

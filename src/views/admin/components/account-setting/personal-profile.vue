@@ -59,58 +59,69 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo"])
+  },
+  watch: {
+    userInfo: {
+      immediate: true,
+      handler(val) {
+        Object.keys(val).forEach(prop => {
+          //不要使用对象原型上的方法，因为原型上的方法可能被重写了
+          if (
+            Object.prototype.hasOwnProperty.call(this.userInfoForm, prop) &&
+            val[prop]
+          ) {
+            this.userInfoForm[prop] = val[prop];
+          }
+        });
+      }
+    }
   },
   data() {
     return {
       isEdit: true,
       headerObj: {
-        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        Authorization: "Bearer " + window.localStorage.getItem("token")
       },
       userInfoForm: {
         username: "",
         email: "",
         mobile: "",
         active: true,
-        avator: require("../../../../assets/images/me.png"),
+        avator: require("@/assets/images/me.png")
       },
       baseInfo: [
         {
           label: "昵称：",
           componentName: "el-input",
           propName: "username",
-          disabled: true,
+          disabled: true
         },
         {
           label: "电子邮件：",
           componentName: "el-input",
           propName: "email",
-          disabled: true,
+          disabled: true
         },
         {
           label: "手机号码：",
           componentName: "el-input",
           propName: "mobile",
-          disabled: true,
+          disabled: true
         },
         {
           label: "是否接收消息：",
           componentName: "el-switch",
           propName: "active",
-          disabled: false,
-        },
-      ],
+          disabled: false
+        }
+      ]
     };
-  },
-  created() {
-    Object.keys(this.userInfoForm).forEach((prop) => {
-      this.userInfoForm[prop] = this.userInfo[prop];
-    });
   },
   methods: {
     editUserInfo() {
       this.isEdit = !this.isEdit;
-      this.baseInfo = this.baseInfo.map((item) => {
+      this.baseInfo = this.baseInfo.map(item => {
         if (item.componentName == "el-input") {
           item.disabled = !this.isEdit ? false : true;
         }
@@ -119,8 +130,9 @@ export default {
     },
     submitForm() {
       this.$refs.uploader.submit();
-      this.$XHR.updateUserInfo(this.userInfoForm).then((res) => {
+      this.$XHR.updateUserInfo(this.userInfoForm).then(res => {
         if (res.code == 200 && !res.data.length) {
+          this.isEdit = false;
           this.editUserInfo();
           this.$store.dispatch("user/GET_USERINFO");
           this.$message.success("信息修改成功");
@@ -139,8 +151,8 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isLt2M;
-    },
-  },
+    }
+  }
 };
 </script>
 

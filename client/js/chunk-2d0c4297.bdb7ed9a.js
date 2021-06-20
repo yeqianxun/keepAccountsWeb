@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c4297"],{"3a3f":function(n,t,e){"use strict";e.r(t);var c=function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",[n._v("房屋详情")])},u=[],a={data:function(){return{msg:""}},methods:{}},r=a,s=e("5d22"),d=Object(s["a"])(r,c,u,!1,null,"112817d0",null);t["default"]=d.exports}}]);

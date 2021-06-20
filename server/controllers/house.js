@@ -1,11 +1,15 @@
-
 const fs = require("fs");
 const path = require("path")
 let Op = require("sequelize").Op;
-let { HouseInfoModel, HouseImgModel } = require("../model/index.js");
-let { uploadImages } = require("../lib/utils")
+let {
+    HouseInfoModel,
+    HouseImgModel
+} = require("../model/index.js");
+let {
+    uploadImages
+} = require("../lib/utils")
 module.exports = {
-    async uploadHouse(ctx, next) {
+    async uploadHouse(ctx) {
         let files = ctx.request.files;
         let formData = ctx.request.body;
         formData.userUid = ctx.state.payload.uid;
@@ -28,19 +32,36 @@ module.exports = {
             message: "上传房屋信息成功"
         }
     },
-    async getAllHouseInfo(ctx, next) {
+    async getAllHouseInfo(ctx) {
         let houses = await HouseInfoModel.findAll({
-            // attributes: ["cityname"],
+            attributes: ["house_id", "house_type", "desc", "layout", "house_square", "address","house_price"],
+            // attributes:{exclude:[]}
             include: [{
                 model: HouseImgModel,
                 // as: "house_images",
-                // attributes: ["region_name"]
+                attributes: ["url"]
             }]
         });
         ctx.body = {
             code: 200,
             data: houses,
             message: "所有房屋信息"
+        }
+    },
+    async getHouseDetail(ctx) {
+        let houseid = ctx.query.house_id;
+        let houseInfo = await HouseInfoModel.findOne({
+            where: {
+                house_id: houseid,
+            },
+            include: [{
+                model: HouseImgModel,
+            }]
+        })
+        ctx.body = {
+            code: 200,
+            data: houseInfo,
+            message: "获取房屋详情"
         }
     }
 }

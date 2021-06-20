@@ -4,7 +4,7 @@
       <div class="home-bg"></div>
       <h2>我的站点</h2>
       <p class="hone-p1">
-        一个用Vue2全家桶,Koa和Mysql开发的在线Web项目，旨在将学习到的前端后端技术融会贯通，
+        一个用Vue2全家桶,Koa和Mysql(Sequelize),Socket.io开发的在线Web项目，旨在将学习到的前端后端技术融会贯通，
         学习和思考产品的设计。
       </p>
       <p>

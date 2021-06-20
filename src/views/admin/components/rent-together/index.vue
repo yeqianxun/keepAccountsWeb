@@ -1,16 +1,18 @@
 <template>
   <div class="rent-together">
-    <h2>{{ rentType }}</h2>
+    <h2>{{ hosueType }}</h2>
     <p class="text">...为您提供大量的租房信息合租房信息..</p>
     <section class="house-list">
-      <template v-for="(item, index) in FourHouse">
+      <template v-for="item in HouseList">
         <router-link
-          to="/admin/house-detail"
+          :to="`/admin/house-detail/${item.house_id}`"
           target="_blank"
           class="house-info"
           :key="item.house_id"
         >
-          <img :src="FourHouse[index].houseimgs[0].url" alt="" />
+          <img
+            :src="item.houseimgs.length &&item.houseimgs[0].url" alt=""
+          />
           <div class="house-info-detail">
             <h4 class="house-desc">{{ item.desc }}</h4>
             <p>
@@ -35,24 +37,19 @@
 <script>
 export default {
   props: {
-    rentType: {
+    hosueType: {
       type: String,
-      default: "",
+      default: ""
     },
-    houseList: {
+    HouseList: {
       type: Array,
-      default: () => [],
-    },
-  },
-  computed: {
-    FourHouse() {
-      return this.houseList.slice(0, 4);
-    },
+      default: () => []
+    }
   },
   data() {
     return {};
   },
-  methods: {},
+  methods: {}
 };
 </script>
 
@@ -67,7 +64,7 @@ export default {
     margin-bottom: 20px;
   }
   .load-more {
-    display: inline-block;
+    display: block;
     width: 280px;
     height: 50px;
     text-align: center;

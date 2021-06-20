@@ -17,6 +17,7 @@
     "koa-logger": "^2.0.1",
     "koa-onerror": "^1.2.1",
     "koa-router": "^7.1.1",
+    "socket.io": "^2.3.0",
     "koa-static": "^5.0.0",
     "moment": "^2.24.0",
     "mysql2": "^1.6.5",

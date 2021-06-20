@@ -22,8 +22,8 @@ sequelize
 
 // 根据模型自动创建表
 sequelize.sync({
-  alter: true,
-  logging: console.log
+  // alter: true,
+  // logging: console.log
 })
 
 module.exports = sequelize

@@ -8,6 +8,7 @@ var app = require('../server');
 var debug = require('debug')('demo:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -20,21 +21,32 @@ var port = normalizePort(process.env.PORT || '3333');
  */
 
 var server = http.createServer(app.callback());
+const io = require('socket.io')(server);
+io.on('connection', (socket) => {
+  console.log("客户端端连接上了")
+  socket.on('disconnect', () => {
+    console.log('客户端断开')
+  });
+  io.emit('welcome', '欢迎连接socket')
 
+  socket.on('hello', data => {
+    console.log('接收客户端发送数据', data)
+    io.emit("welcome", "欢饮来到中国")
+  })
+});
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port, () => {
   console.log("server:3333启动")
 });
+// var socket = require("socket.io").listen(server, {  "transports": ['polling', 'websocket'] });
+
 server.on('error', onError);
 server.on('listening', onListening);
-
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
