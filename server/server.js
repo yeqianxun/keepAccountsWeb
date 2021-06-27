@@ -19,7 +19,6 @@ app.use(Cors({
     // return "http://192.168.0.108:8888"//指定的请求域名+端口
     return "*"
   },
-
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],//表明服务器支持的所有头信息字
   maxAge: 5,
   credentials: true,//表示是否允许发送Cookie。默认情况下，Cookie不包括在CORS请求之中

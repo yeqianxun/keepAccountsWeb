@@ -10,9 +10,7 @@
           class="house-info"
           :key="item.house_id"
         >
-          <img
-            :src="item.houseimgs.length &&item.houseimgs[0].url" alt=""
-          />
+          <img :src="item.houseimgs.length && item.houseimgs[0].url" alt="" />
           <div class="house-info-detail">
             <h4 class="house-desc">{{ item.desc }}</h4>
             <p>
@@ -21,7 +19,7 @@
             <p class="house-price">{{ item.house_price }}¥/月</p>
             <img
               class="house-owner-avator"
-              src="http://localhost:3333/avator/6117d570-c674-11eb-be9f-d11197d3377e.png"
+              :src="item.user && item.user.avator"
               alt=""
             />
           </div>
@@ -39,17 +37,17 @@ export default {
   props: {
     hosueType: {
       type: String,
-      default: ""
+      default: "",
     },
     HouseList: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
 };
 </script>
 

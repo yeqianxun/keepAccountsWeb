@@ -7,7 +7,7 @@
         <template v-for="item in houselabels.cities">
           <span
             @click="changeCity(item)"
-            :class="['city-item', item.cid == cid ? 'selected' : '']"
+            :class="['city-item', item.cid == formObj.cid ? 'selected' : '']"
             :key="item.cid"
             >{{ item.cityname }}</span
           >
@@ -19,7 +19,7 @@
           <span
             :class="[
               'region-item',
-              item.regionid == regionId ? 'selected' : '',
+              item.regionid == formObj.regionId ? 'selected' : '',
             ]"
             :key="item.regionid"
             @click="regionChange(item)"
@@ -35,7 +35,10 @@
             >{{ item.text }}
           </p>
           <div class="rent_price">
-            <el-radio-group v-model="item.propName">
+            <el-radio-group
+              v-model="formObj[item.propName]"
+              @change="RadioGroupChange"
+            >
               <template v-for="(child, k) in item.values">
                 <el-radio :key="k" :label="child"></el-radio>
               </template>
@@ -50,36 +53,39 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  watch: {
-    "houselabels.cities": {
-      deep: true,
-      immediate: true,
-      handler(val) {
-        if (val.length) {
-          this.cid = val[0]?.cid;
-          this.regionId = val[0]?.cityregions[0]?.regionid;
-        }
-      },
-    },
-  },
+  // watch: {
+  //   "houselabels.cities": {
+  //     deep: true,
+  //     immediate: true,
+  //     handler(val) {
+  //       if (val.length) {
+  //         this.formObj.cid = val[0]?.cid;
+  //         this.formObj.regionId = val[0]?.cityregions[0]?.regionid;
+  //       }
+  //     },
+  //   },
+  // },
   computed: {
     ...mapGetters(["houselabels"]),
     regions() {
       return (
-        (this.cid &&
-          this.houselabels?.cities?.find((item) => item.cid == this.cid)
+        (this.formObj.cid &&
+          this.houselabels?.cities?.find((item) => item.cid == this.formObj.cid)
             ?.cityregions) ||
+        this.houselabels.cities[0].cityregions ||
         []
       );
     },
   },
   data() {
     return {
-      cid: "",
-      regionId: "",
-      housePrice: "",
-      square: "",
-      layout: "",
+      formObj: {
+        cid: "",
+        regionId: "",
+        housePrice: "",
+        square: "",
+        layout: "",
+      },
       labels: [
         {
           propName: "housePrice",
@@ -109,14 +115,47 @@ export default {
     };
   },
   methods: {
+    clear(prop) {
+      prop && (this.formObj[prop] = "");
+      if (!prop) {
+        Object.keys(this.formObj).forEach((prop) => {
+          this.formObj[prop] = "";
+        });
+      }
+    },
     regionChange(val) {
-      this.regionId = val.regionid;
+      this.formObj.regionId = val.regionid;
+      this.RadioGroupChange();
     },
     changeCity(val) {
-      this.cid = val.cid;
-      this.regionId = this.houselabels.cities.find(
+      this.formObj.cid = val.cid;
+      this.formObj.regionId = this.houselabels.cities.find(
         (item) => item.cid == val.cid
       ).cityregions[0]?.regionid;
+      this.RadioGroupChange();
+    },
+    RadioGroupChange() {
+      let obj = {};
+      if (this.formObj.cid && this.formObj.regionId) {
+        let cityobj = this.houselabels.cities.find(
+          (city) => city.cid == this.formObj.cid
+        );
+        let cityname = cityobj.cityname;
+        let region = cityobj.cityregions.find(
+          (region) => region.regionid == this.formObj.regionId
+        ).region_name;
+        obj.area = cityname + "-" + region;
+      }
+      if (this.formObj.layout) {
+        obj.layout = this.formObj.layout;
+      }
+      if (this.formObj.housePrice) {
+        obj.housePrice = this.formObj.housePrice;
+      }
+      if (this.formObj.square) {
+        obj.square = this.formObj.square;
+      }
+      this.$emit("label-select", obj);
     },
   },
 };

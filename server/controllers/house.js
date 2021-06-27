@@ -3,7 +3,8 @@ const path = require("path")
 let Op = require("sequelize").Op;
 let {
     HouseInfoModel,
-    HouseImgModel
+    HouseImgModel,
+    UserModel
 } = require("../model/index.js");
 let {
     uploadImages
@@ -34,12 +35,15 @@ module.exports = {
     },
     async getAllHouseInfo(ctx) {
         let houses = await HouseInfoModel.findAll({
-            attributes: ["house_id", "house_type", "desc", "layout", "house_square", "address","house_price"],
+            attributes: ["house_id", "house_type", "desc", "layout", "house_square", "address", "house_price"],
             // attributes:{exclude:[]}
             include: [{
                 model: HouseImgModel,
                 // as: "house_images",
                 attributes: ["url"]
+            }, {
+                model: UserModel,
+                attributes: ["avator"]
             }]
         });
         ctx.body = {
@@ -63,5 +67,32 @@ module.exports = {
             data: houseInfo,
             message: "获取房屋详情"
         }
+    },
+    async getMyHouse(ctx, next) {
+        let { uid } = ctx.state.payload;
+        let myhouse = await HouseInfoModel.findAll({
+            where: {
+                userUid: uid
+            },
+            include: [{
+                model: HouseImgModel
+            }]
+        });
+        if (myhouse) {
+            ctx.body = {
+                code: 200,
+                data: myhouse,
+                message: "查询登录用的的房屋列表"
+            }
+        } else {
+            ctx.body = {
+                code: -1,
+                data: [],
+                message: "房屋查询失败"
+            }
+        }
+
+
+
     }
 }

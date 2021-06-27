@@ -26,3 +26,10 @@ export function getHouseDetail(data) {
         data
     });
 }
+export function getMyHouse(data) {
+    return http({
+        method: "GET",
+        url: BaseURL.getMyHouse,
+        data
+    });
+}

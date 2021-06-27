@@ -7,6 +7,7 @@ let BaseURL = {
     updateUserInfo: "/users/updateUserInfo",
     uploadHouse: "/house/uploadHouse",
     getAllHouseInfo: "/house/getAllHouseInfo",
-    getHouseDetail: "/house/getHouseDetail"
+    getHouseDetail: "/house/getHouseDetail",
+    getMyHouse: "/house/getMyHouse"
 }
 export default BaseURL

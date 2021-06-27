@@ -15,13 +15,16 @@ import "@/assets/fonts/iconfont.css";
 
 import NProgress from "nprogress"; // Progress 进度条
 import "nprogress/nprogress.css"; // Progress 进度条样式
-
+// import BaiduMap from 'vue-baidu-map'
+// Vue.use(BaiduMap, {
+//   ak: 'N5HpU1no1HpkKfveodTs6RiNwLohY2s8'
+// })
 Vue.config.productionTip = false;
 Vue.prototype.$XHR = XHR;
 
 Vue.use(VueRouter);
 Vue.use(new VueSocketIO({
-  debug: true,   // debug调试，生产建议关闭
+  // debug: true,   // debug调试，生产建议关闭
   connection: "192.168.0.108:3333",
   store,          // 如果没有
   options: { transports: ['websocket', 'xhr-polling', 'jsonp-polling'], }

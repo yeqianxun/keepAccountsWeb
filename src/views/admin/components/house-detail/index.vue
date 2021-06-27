@@ -39,10 +39,8 @@
 </template>
 
 <script>
-// import WebSocketMixin from "@/mixin/msgWebsocket.js";
 export default {
   name: "HouseDetail",
-  // mixins: [WebSocketMixin],
   data() {
     return {
       houseInfo: {},
@@ -50,7 +48,6 @@ export default {
     };
   },
   created() {
-    // this.initWebSocket("ws://192.168.0.108:3333/chat");
     this.$XHR
       .getHouseDetail({
         house_id: this.$route.params.house_id,
@@ -67,7 +64,6 @@ export default {
         console.log("welcome data ", data);
       });
     },
-
     // 发送消息
     sendMessage() {
       this.$socket.emit("hello", "这里是客户端");

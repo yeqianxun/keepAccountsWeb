@@ -18,8 +18,10 @@
       </ul>
     </el-col>
     <el-col :span="18"
-      ><component :is="activeTab" class="account-main"></component
-    ></el-col>
+      ><keep-alive>
+        <component :is="activeTab" class="account-main"></component>
+      </keep-alive>
+    </el-col>
   </el-row>
 </template>
 
@@ -66,7 +68,7 @@ export default {
           componentName: "ReleaseHouseResource",
           isHouseOwner: true,
         },
-           {
+        {
           text: "我的房源",
           icon: "icon-zufang",
           componentName: "MyHouse",

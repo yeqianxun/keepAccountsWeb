@@ -56,9 +56,7 @@ let UserController = {
             uid
         } = ctx.state.payload;
         let userInfo = await UserModel.findOne({
-            attributes: {
-                exclude: ["password"]
-            },
+            attributes: ["avator", "username","email","mobile","active"],
             where: {
                 uid: {
                     [Op.eq]: uid
@@ -110,10 +108,18 @@ let UserController = {
                 usertype: "0",
                 active: false
             });
-            ctx.body = {
-                status: "success",
-                code: 0,
-                message: "注册成功，请登录"
+            if (saveUser) {
+                ctx.body = {
+                    status: "success",
+                    code: 0,
+                    message: "注册成功，请登录"
+                }
+            } else {
+                ctx.body = {
+                    status: "fail",
+                    code: 0,
+                    message: "注册失败，请重新注册"
+                }
             }
         } else {
             ctx.body = {

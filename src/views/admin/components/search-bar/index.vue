@@ -5,14 +5,33 @@
       v-model="searchText"
       class="main-search"
       @focus="showSearchLabel = true"
+      :clearable="true"
+      @change="clear"
     >
       <template slot="prepend"
         ><span class="iconfont icon-search"></span
       ></template>
-      <template slot="append" @click="goSearch">搜索</template>
+      <template slot="append"><div @click="goSearch">搜索</div></template>
     </el-input>
     <div class="search-labels" v-if="showSearchLabel">
-      <search-labels></search-labels>
+      <p class="search-condition">
+        搜索条件：
+        <template v-for="(value, key, index) of labelObj">
+          <el-tag
+            type="success"
+            class="label-item"
+            closable
+            :key="index"
+            @close="closeTag(key)"
+          >
+            {{ value }}
+          </el-tag>
+        </template>
+      </p>
+      <search-labels
+        ref="searchLable"
+        @label-select="labelSelect"
+      ></search-labels>
     </div>
     <div
       class="mask"
@@ -32,12 +51,40 @@ export default {
   data() {
     return {
       searchText: "",
+      labelObj: {},
       showSearchLabel: false,
     };
   },
   mounted() {},
   methods: {
-    goSearch() {},
+    closeTag(prop) {
+      this.$delete(this.labelObj, prop);
+      this.clear(prop);
+    },
+    goSearch() {
+      let obj = {};
+      Object.keys(this.labelObj).forEach((prop) => {
+        obj[prop] = encodeURI(this.labelObj[prop]);
+      });
+      if (this.searchText) {
+        obj = {};
+        obj.searchText = this.searchText;
+      }
+      const { href } = this.$router.resolve({
+        path: "/admin/find-house",
+        query: obj,
+      });
+      window.open(href, "_blank"); //打开新的窗口
+      this.searchText = "";
+    },
+    labelSelect(objText) {
+      Object.keys(objText).forEach((prop) => {
+        this.$set(this.labelObj, prop, objText[prop]);
+      });
+    },
+    clear(prop) {
+      this.$refs.searchLable.clear(prop);
+    },
   },
 };
 </script>
@@ -63,6 +110,13 @@ export default {
     z-index: 99;
   }
   .search-labels {
+    .label-item {
+      display: inline-block;
+      height: 30px;
+      padding: 2px 6px;
+      margin: 0px 4px;
+    }
+    text-align: left;
     position: absolute;
     bottom: -300px;
     left: 0;
@@ -72,6 +126,10 @@ export default {
     box-shadow: 0 0 5px #ccc;
     z-index: 100;
     overflow: auto;
+    .search-condition {
+      margin: 0;
+      padding: 10px 0 0px 20px;
+    }
   }
 }
 </style>
