@@ -9,8 +9,6 @@ const cdn = {
         'vue-router': 'VueRouter',
         "vuex": 'Vuex',
         "axios": 'axios',
-        //   moment: "moment",
-        //   echarts: "echarts"
     },
 
     // 通过cdn方式使用
@@ -26,6 +24,7 @@ const cdn = {
 }
 module.exports = {
     outputDir: process.env.VUE_APP_DIR_NAME,
+    publicPath: process.env.VUE_APP_PUBLIC_PATH,
     productionSourceMap: false,
     devServer: {
         port: "8888",
@@ -35,9 +34,8 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '^/api': {
-                target: 'http://192.168.0.108:3333',
+                target: 'http://192.168.0.110:3333',
                 changeOrigin: true,
-                // ws: true,
                 pathRewrite: {
                     '^/api': ''
                 }
@@ -48,6 +46,13 @@ module.exports = {
         // 添加别名
         config.resolve.alias
             .set("@", resolve("src"));
+        // if (process.env.NODE_ENV == "production") {
+        //     config.module.rule('images')
+        //         .test(/\.(png|jpeg|jep|gif|svg)(\?.*)?$/)
+        //         .use('image-webpack-loader')
+        //         .loader('image-webpack-loader')
+        //         .options({ bypassOnDebug: true })
+        // }
         const oneOfsMap = config.module.rule("scss").oneOfs.store;
         oneOfsMap.forEach(item => {
             item
@@ -64,27 +69,33 @@ module.exports = {
                 .end();
         });
         //
-        config.plugin('html').tap(args => {
-            args[0].cdn = cdn
-            return args
-        })
+        if (process.env.NODE_ENV == "production") {
+            config.plugin('html').tap(args => {
+                args[0].cdn = cdn
+                return args
+            });
+
+        }
         config.plugins.delete('prefetch');
     },
     //打包忽略第三方库
     configureWebpack: config => {
         // 忽略打包配置
-        config.externals = cdn.externals;
-        // 开启gzip压缩
-        config.plugins.push(
-            new CompressionWebpackPlugin({
-                test: /\.(js|css)?$/i, // 哪些文件要压缩
-                filename: '[path].gz[query]',　// 压缩后的文件名
-                algorithm: 'gzip',　// 使用gzip压缩
-                minRatio: 1,　// 压缩率小于1才会压缩
-                deleteOriginalAssets: true // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为
-            }
+        if (process.env.NODE_ENV == "production") {
+            config.externals = cdn.externals
+            // 开启gzip压缩
+            config.plugins.push(
+                new CompressionWebpackPlugin({
+                    test: /\.(js|css)?$/i, // 哪些文件要压缩
+                    filename: '[path].gz[query]',　// 压缩后的文件名
+                    algorithm: 'gzip',　// 使用gzip压缩
+                    minRatio: 1,　// 压缩率小于1才会压缩
+                    deleteOriginalAssets: true // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为
+                }
+                )
             )
-        )
+        }
+
     }
 
 };

@@ -17,8 +17,9 @@
       <el-container>
         <el-main>
           <transition name="slide-fade" mode="out-in">
-            <router-view :key="path"></router-view>
-          </transition>
+            <keep-alive> <router-view :key="path"></router-view> </keep-alive
+          ></transition>
+
           <footer-info />
         </el-main>
       </el-container>

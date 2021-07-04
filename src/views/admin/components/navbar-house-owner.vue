@@ -50,7 +50,7 @@ export default {
         },
         {
           index: "2",
-          text: "租房",
+          text: "租111房",
           icon: "icon-zufang",
           path: "/admin/find-house",
         },

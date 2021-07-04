@@ -1,5 +1,5 @@
 <template>
-  <div class="account-settings">
+  <div class="find-house-page">
     <p>
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/admin/index' }"
@@ -46,13 +46,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.account-settings {
+.find-house-page {
   text-align: left;
   width: 1240px;
   margin: 0 auto;
   .find-house-model {
     @include flex-center;
-    justify-content: start;
+    justify-content: flex-start;
     .house-model {
       margin: 4px 8px 4px 0px;
       padding: 4px 8px;

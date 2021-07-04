@@ -35,7 +35,7 @@ module.exports = {
     },
     async getAllHouseInfo(ctx) {
         let houses = await HouseInfoModel.findAll({
-            attributes: ["house_id", "house_type", "desc", "layout", "house_square", "address", "house_price"],
+            attributes: ["house_id", "house_type", "desc", "build_date", "floor_level", "layout", "house_square", "address", "house_price"],
             // attributes:{exclude:[]}
             include: [{
                 model: HouseImgModel,

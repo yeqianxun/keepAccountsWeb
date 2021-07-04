@@ -10,7 +10,15 @@
 .el-main {
     padding: 0;
 }
-.el-menu.el-menu--horizontal{
+.el-menu.el-menu--horizontal {
     border: 0;
 }
 
+.el-menu-item {
+    transition: none;
+}
+.el-menu--horizontal > .el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal > .el-menu-item:not(.is-disabled),
+.el-menu--horizontal > .el-submenu .el-submenu__title {
+    border-bottom: 0px transparent;
+}

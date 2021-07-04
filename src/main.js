@@ -8,10 +8,12 @@ import routes from "@/router";
 import XHR from "@/http/index.js";
 import VueSocketIO from 'vue-socket.io'
 import vueSwiper from 'vue-awesome-swiper'
+import VueLazyLoad from 'vue-lazyload'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'swiper/dist/css/swiper.css'
 import "@/style/index.scss";
 import "@/assets/fonts/iconfont.css";
+
 
 import NProgress from "nprogress"; // Progress 进度条
 import "nprogress/nprogress.css"; // Progress 进度条样式
@@ -25,11 +27,14 @@ Vue.prototype.$XHR = XHR;
 Vue.use(VueRouter);
 Vue.use(new VueSocketIO({
   // debug: true,   // debug调试，生产建议关闭
-  connection: "192.168.0.108:3333",
+  connection: "192.168.0.110:3333",
   store,          // 如果没有
   options: { transports: ['websocket', 'xhr-polling', 'jsonp-polling'], }
   // options: {transports: ['websocket', 'xhr-polling'], }
 }));
+Vue.use(VueLazyLoad, {
+  error: './assets/images/default.png'
+})
 //获取原型对象上的push函数
 const originalPush = VueRouter.prototype.push
 //修改原型对象中的push方法
