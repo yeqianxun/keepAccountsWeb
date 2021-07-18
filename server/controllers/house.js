@@ -1,10 +1,9 @@
-const fs = require("fs");
-const path = require("path")
 let Op = require("sequelize").Op;
 let {
     HouseInfoModel,
     HouseImgModel,
-    UserModel
+    UserModel,
+    FollowModel
 } = require("../model/index.js");
 let {
     uploadImages
@@ -20,11 +19,11 @@ module.exports = {
         if (files.files.length) {
             for (let k = 0; k < files.files.length; k++) {
                 let _localFilePath = files.files[k].path;
-                let houseImg = await uploadImages(ctx, _localFilePath, houseItem)
+                await uploadImages(ctx, _localFilePath, houseItem)
             }
         } else {
             if (files.files.path) {
-                let houseImg = await uploadImages(ctx, files.files.path, houseItem)
+                await uploadImages(ctx, files.files.path, houseItem)
             }
         }
         ctx.body = {
@@ -34,9 +33,11 @@ module.exports = {
         }
     },
     async getAllHouseInfo(ctx) {
+        let { sortby, ascOrDesc } = ctx.query
         let houses = await HouseInfoModel.findAll({
-            attributes: ["house_id", "house_type", "desc", "build_date", "floor_level", "layout", "house_square", "address", "house_price"],
+            attributes: ["house_id", "house_type", "created_at", "desc", "build_date", "floor_level", "layout", "house_square", "address", "house_price"],
             // attributes:{exclude:[]}
+            order: [[sortby, ascOrDesc]],
             include: [{
                 model: HouseImgModel,
                 // as: "house_images",
@@ -44,7 +45,10 @@ module.exports = {
             }, {
                 model: UserModel,
                 attributes: ["avator"]
-            }]
+            }],
+            where: {
+
+            }
         });
         ctx.body = {
             code: 200,
@@ -68,7 +72,7 @@ module.exports = {
             message: "获取房屋详情"
         }
     },
-    async getMyHouse(ctx, next) {
+    async getMyHouse(ctx) {
         let { uid } = ctx.state.payload;
         let myhouse = await HouseInfoModel.findAll({
             where: {
@@ -91,8 +95,49 @@ module.exports = {
                 message: "房屋查询失败"
             }
         }
-
-
-
+    },
+    async followHouse(ctx) {
+        let data = {
+            houseid: ctx.query.house_id,
+            userid: ctx.state.payload.uid
+        }
+        let followed = ctx.query.follow
+        let message = ""
+        if (followed > 0) {
+            let res = await FollowModel.create(data);
+            if (res) { message = "关注成功" }
+        } else {
+            let res = await FollowModel.destroy({
+                where: {
+                    houseid: ctx.query.house_id,
+                    userid: ctx.state.payload.uid
+                }
+            });
+            console.log("取消", res, data)
+            if (res) { message = "取消关注" }
+        }
+        ctx.body = {
+            code: 200, message
+        }
+    },
+    async getHouseFollows(ctx) {
+        let { house_id, by } = ctx.query;
+        let uid = ctx.state.payload.uid;
+        let obj = Object.assign({}, by == "house_id" ? {
+            houseid: house_id
+        } : {
+            userid: uid
+        })
+        let houselist = await FollowModel.findAll({
+            where: obj,
+            // attributes: ["userid"]
+        });
+        if (houselist) {
+            ctx.body = {
+                code: 200,
+                data: houselist,
+                message: "根据房屋by找关注的房屋"
+            }
+        }
     }
 }

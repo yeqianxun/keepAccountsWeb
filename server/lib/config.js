@@ -1,6 +1,6 @@
 module.exports = {
     SqlConfig: {
-        DBName: "find_house",
+        DBName: "find-house",
         DBOwner: "root",
         DBPwd: "123456",
     },

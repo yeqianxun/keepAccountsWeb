@@ -6,6 +6,7 @@ module.exports = function (Sequelize, DataTypes) {
     avator: { type: DataTypes.STRING, allowNull: true, defaultValue: "", comment: "用户头像" },
     username: { type: DataTypes.STRING, allowNull: false, comment: '用户名' },
     password: { type: DataTypes.STRING, allowNull: false, comment: '用户密码' },
+    followhouses: { type: DataTypes.STRING, allowNull: true, comment: '用户关注的房源' },
     sex: { type: DataTypes.STRING, allowNull: true, comment: '性别' },
     mobile: { type: DataTypes.STRING, allowNull: true, comment: '手机号码' },
     email: { type: DataTypes.STRING, allowNull: true, comment: '邮箱' },

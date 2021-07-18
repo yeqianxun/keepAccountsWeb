@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path")
 const jsonwebtoken = require("jsonwebtoken")
 let {
-    UserModel
+    UserModel, FollowModel
 } = require("../model/index.js");
 let {
     MD5Crypto,
@@ -56,12 +56,12 @@ let UserController = {
             uid
         } = ctx.state.payload;
         let userInfo = await UserModel.findOne({
-            attributes: ["avator", "username","email","mobile","active"],
+            attributes: ["avator", "username","uid", "email", "mobile", "active"],
             where: {
                 uid: {
                     [Op.eq]: uid
                 }
-            }
+            },
         })
         ctx.body = {
             status: 200,
@@ -130,7 +130,7 @@ let UserController = {
         }
     },
     // https://segmentfault.com/a/1190000021996824
-    async uploadAvator(ctx, next) {
+    async uploadAvator(ctx) {
         if (ctx.request.files) {
             let {
                 uid
@@ -162,7 +162,7 @@ let UserController = {
             }
         }
     },
-    async updateUserInfo(ctx, next) {
+    async updateUserInfo(ctx) {
         let {
             uid
         } = ctx.state.payload;
